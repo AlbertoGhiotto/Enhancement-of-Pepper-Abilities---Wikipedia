@@ -185,6 +185,8 @@ pip-selfcheck.json
 
 .idea/
 
+src/
+
 ## File-based project format:
 *.iws
 
