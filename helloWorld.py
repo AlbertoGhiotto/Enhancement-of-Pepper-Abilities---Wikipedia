@@ -47,16 +47,17 @@ understand_module.setLanguage("English")  # Set the language
 #if(speak_module.SpeechDetected == 0)
 #   keyword = ("understand_module.WordRecognized[0] wikipedia")
 #____________________________________________________________________
-keyword = ("Pepper(robot)")
+keyword = ("Meatball")
+got_keyword = ("Not Meatball")
 ny = wikipedia.page(keyword) #to load and access data from full Wikipedia pages
 
-speak_module.say("The keyword is")
+speak_module.say("Keyword")
 speak_module.say(keyword)
 
 # Display the image on the tablet
-imageStr = unicodedata.normalize('NFKD', ny.images[2]).encode('ascii','ignore')
+imageStr = unicodedata.normalize('NFKD', ny.images[1]).encode('ascii','ignore')
 tablet_module.showImage(imageStr)
-time.sleep(2)
+time.sleep(5)
 tablet_module.hideImage()
 
 # Convert the output of the wikipedia toolbox from unicode to string
@@ -69,37 +70,55 @@ content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1))
 
 time.sleep(1)
 
+# Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
+vocabulary = ["yes", "meatball", "no", "please"]
+understand_module.setVocabulary(vocabulary, False)
+
+speak_module.say("Do you want more information?")
+understand_module.subscribe("Test_ASR")
+speak_module.say("Speech recognition engine started")
+time.sleep(5)
+understand_module.unsubscribe("Test_ASR")
+speak_module.say("Speech recognition stopped")
+
+
+if(speak_module.SpeechDetected == 1):
+  got_keyword = ("understand_module.WordRecognized[0] wikipedia")
+
+
+speak_module.say(got_keyword)
+
+
 # Writing topics' qichat code as text strings (end-of-line characters are important!)
-dialogue_module.setLanguage("English")
-topicContent = ('topic: ~mytopic()\n'
-                'language: enu\n'
-                'u: (hello) Hello human!'
-                'proposal: Do you want to know more information?\n'
-                'u1: (yes) Great!\n'
-                'u2: (no) Ok.\n')
-topicName = dialogue_module.loadTopicContent(topicContent)
-print topicName
-print dialogue_module.getLoadedTopics("English")
+# dialogue_module.setLanguage("English")
+# topicContent = ('topic: ~mytopic()\n'
+#                 'language: enu\n'
+#                 'u: (Hello) Hello human!'
+#                 'proposal: Do you want to know more information?\n'
+#                 'u1: (yes) Great!\n'
+#                 'u2: (no) Ok.\n')
+# topicName = dialogue_module.loadTopicContent(topicContent)
+# print topicName
+# print dialogue_module.getLoadedTopics("English")
 
 # Activating the loaded topics
-dialogue_module.activateTopic(topicName)
+# dialogue_module.activateTopic(topicName)
 
 # Starting the dialog engine - we need to type an arbitrary string as the identifier
 # We subscribe only ONCE, regardless of the number of topics we have activated
-dialogue_module.subscribe('my_dialog_example')
-
-
-try:
-        raw_input("\nSpeak to the robot using rules from the just loaded .top file. Press Enter when finished:")
-finally:
-        # Stopping the dialog engine
-        dialogue_module.unsubscribe('my_dialog_example')
-
-        # Deactivating the topic
-        dialogue_module.deactivateTopic(topicName)
-
-        # Now that the dialog engine is stopped and there are no more activated topics,
-        # we can unload our topic and free the associated memory
-        dialogue_module.unloadTopic(topicName)
-
+# dialogue_module.subscribe('my_dialog_example')
+#
+#
+# try:
+#         raw_input("\nSpeak to the robot using rules from the just loaded .top file. Press Enter when finished:")
+# finally:
+#         # Stopping the dialog engine
+#         dialogue_module.unsubscribe('my_dialog_example')
+#
+#         # Deactivating the topic
+#         dialogue_module.deactivateTopic(topicName)
+#
+#         # Now that the dialog engine is stopped and there are no more activated topics,
+#         # we can unload our topic and free the associated memory
+#         dialogue_module.unloadTopic(topicName)
 
