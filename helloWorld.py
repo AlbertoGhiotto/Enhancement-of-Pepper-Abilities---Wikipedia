@@ -61,6 +61,8 @@ tablet_module.showImage(imageStr)
 time.sleep(1)
 tablet_module.hideImage()
 
+sections = wikipedia.sections(keyword)
+
 # Convert the output of the wikipedia toolbox from unicode to string
 #content = unicodedata.normalize('NFKD', ny.content).encode('ascii','ignore') #to read all the page??
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') #to read the first phrase
@@ -86,9 +88,11 @@ try:
         word = mem_module.getData("WordRecognized")
         if len(word) > 0:
             if word[0] == "yes":
+                speak_module.say("Great! Which one of the following topic would you like to know more about?")
+                speak_module.say(sections)
                 stopped = True
             elif word[0] == "no":
-                pass
+                speak_module.say("Ok.")
 except KeyboardInterrupt:
 
     sys.exit()
