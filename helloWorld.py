@@ -3,6 +3,9 @@ from naoqi import ALProxy
 import wikipedia
 import unicodedata # To convert unicode (read from wikipedia) to string
 import time
+import sys
+import functools
+import argparse
 
 #_______________________________________________________________________________________________________________
 # API : http://doc.aldebaran.com/2-5/naoqi/index.html
@@ -10,6 +13,7 @@ import time
 #Manage audio inputs and outputs, it is used by all other audio modules
 
 audio_module = ALProxy("ALAudioDevice", "130.251.13.158", 9559)
+mem_module = ALProxy("ALMemory", "130.251.13.158", 9559)
 
 # Connects to speech proxy to make the robot speak
 speak_module = ALProxy("ALTextToSpeech", "130.251.13.158", 9559)
@@ -32,7 +36,6 @@ dialogue_module.setLanguage("English")  # Set the language
 understand_module = ALProxy("ALSpeechRecognition", "130.251.13.158", 9559)
 understand_module.setLanguage("English")  # Set the language
 #____________________________________________________________________________________________________
-# Here you should call the listener service to extract the keyword
 # For now we'll assume to have the keyword ready to be used to extract the info from wikipedia
 
 # Start the speech recognition engine with user Test_ASR
@@ -41,14 +44,12 @@ understand_module.setLanguage("English")  # Set the language
 #time.sleep(10)
 #understand_module.unsubscribe("Test_ASR")
 
-#Understand how to extract a keyword
-#http://doc.aldebaran.com/2-5/naoqi/audio/alspeechrecognition-tuto.html
-
 #if(speak_module.SpeechDetected == 0)
 #   keyword = ("understand_module.WordRecognized[0] wikipedia")
 #____________________________________________________________________
 keyword = ("Meatball")
 got_keyword = ("Not Meatball")
+
 ny = wikipedia.page(keyword) #to load and access data from full Wikipedia pages
 
 speak_module.say("Keyword")
@@ -57,7 +58,7 @@ speak_module.say(keyword)
 # Display the image on the tablet
 imageStr = unicodedata.normalize('NFKD', ny.images[1]).encode('ascii','ignore')
 tablet_module.showImage(imageStr)
-time.sleep(5)
+time.sleep(1)
 tablet_module.hideImage()
 
 # Convert the output of the wikipedia toolbox from unicode to string
@@ -71,22 +72,54 @@ content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1))
 time.sleep(1)
 
 # Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
-vocabulary = ["yes", "meatball", "no", "please"]
+vocabulary = ["yes", "no"]
+understand_module.pause(True)
 understand_module.setVocabulary(vocabulary, False)
+understand_module.pause(False)
+
+understand_module.subscribe("WordRecognized")
+# speechRecognized = mem_module.subscriber("WordRecognized")
+stopped = False
+
+try:
+    while not stopped:
+        word = mem_module.getData("WordRecognized")
+        if len(word) > 0:
+            if word[0] == "yes":
+                stopped = True
+            elif word[0] == "no":
+                pass
+except KeyboardInterrupt:
+
+    sys.exit()
+
+# def onSpeechRecognized(msg, value):
+#     print type(value)
+#     print type(value[0])
+#     if value[1] > 0.4:
+#         got_keyword = value[0][6:-6]
+
+# id_speechRecognized = speechRecognized.signal.connect(functools.partial(onSpeechRecognized, "WordRecognized"))
 
 speak_module.say("Do you want more information?")
 understand_module.subscribe("Test_ASR")
 speak_module.say("Speech recognition engine started")
-time.sleep(5)
-understand_module.unsubscribe("Test_ASR")
-speak_module.say("Speech recognition stopped")
+#time.sleep(50)
+
+#if(got_keyword != "Not Meatball"):
+ #   print(got_keyword)
+
+'''
+    #if(SpeechDetected == 1):
+    got_keyword = understand_module.value
+    speak_module.say("Speech detected")
+    print(got_keyword)
+    understand_module.unsubscribe("Test_ASR")
+    speak_module.say("Speech recognition stopped")
+'''
 
 
-if(speak_module.SpeechDetected == 1):
-  got_keyword = ("understand_module.WordRecognized[0] wikipedia")
-
-
-speak_module.say(got_keyword)
+# sections = wikipedia.sections(keyword)
 
 
 # Writing topics' qichat code as text strings (end-of-line characters are important!)
@@ -121,4 +154,3 @@ speak_module.say(got_keyword)
 #         # Now that the dialog engine is stopped and there are no more activated topics,
 #         # we can unload our topic and free the associated memory
 #         dialogue_module.unloadTopic(topicName)
-
