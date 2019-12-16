@@ -7,6 +7,7 @@ from prova import Recognizer
 import sys
 import functools
 import argparse
+from mediawiki import MediaWiki
 
 
 IP = "130.251.13.158"
@@ -44,10 +45,14 @@ vocabulary.append(keyword)
 ny = wikipedia.page(keyword)
 imageStr = unicodedata.normalize('NFKD', ny.images[1]).encode('ascii','ignore') # To get the image
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') # To read the first phrase
-sections = wikipedia.sections(keyword)  # To get the name of the sections
+sections = ny.sections  # To get the name of the sections
+for i in sections:
+    print i
+
+print sections
 
 # Add the sections into the vocabulary
-vocabulary.append(sections)
+vocabulary.extend(sections)  # We use extend to append a list to another list
 understand_module.setVocabulary(vocabulary, False)
 speak_module.say(keyword)
 
@@ -74,14 +79,16 @@ while True:
 
     if user_input == "yes":
         speak_module.say("Great! Which one of the following topic would you like to know more about?")
-        speak_module.say(sections)
+        for i in sections:
+            speak_module.say(i)
+            print i
 
         # Listening for the answer
         user_input_section = rec.listen()
         rec.cleanMemory()
         print user_input_section
 
-        section_summary = unicodedata.normalize('NFKD', wikipedia.summary(wikipedia.page(keyword).section(user_input_section), sentences=1)).encode('ascii','ignore')
+        section_summary = unicodedata.normalize('NFKD', wikipedia.summary(ny.section(user_input_section), sentences=1)).encode('ascii','ignore')
         break
 
 
