@@ -7,7 +7,6 @@ from prova import Recognizer
 import sys
 import functools
 import argparse
-from mediawiki import MediaWiki
 
 
 IP = "130.251.13.158"
