@@ -7,6 +7,9 @@ import sys
 import functools
 import argparse
 
+import importlib
+importlib.import_module("prova.py")
+
 #_______________________________________________________________________________________________________________
 # API : http://doc.aldebaran.com/2-5/naoqi/index.html
 
@@ -14,6 +17,7 @@ import argparse
 
 audio_module = ALProxy("ALAudioDevice", "130.251.13.158", 9559)
 mem_module = ALProxy("ALMemory", "130.251.13.158", 9559)
+# mem_module.setLanguage("English")  # Set the language
 
 # Connects to speech proxy to make the robot speak
 speak_module = ALProxy("ALTextToSpeech", "130.251.13.158", 9559)
@@ -73,29 +77,29 @@ content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1))
 
 time.sleep(1)
 
-# Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
-vocabulary = ["yes", "no"]
-understand_module.pause(True)
-understand_module.setVocabulary(vocabulary, False)
-understand_module.pause(False)
+# # Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
+# vocabulary = ["yes", "no"]
+# understand_module.pause(True)
+# understand_module.setVocabulary(vocabulary, False)
+# understand_module.pause(False)
 
-understand_module.subscribe("WordRecognized")
-# speechRecognized = mem_module.subscriber("WordRecognized")
-stopped = False
+# understand_module.subscribe("WordRecognized")
+# # speechRecognized = mem_module.subscriber("WordRecognized")
+# stopped = False
 
-try:
-    while not stopped:
-        word = mem_module.getData("WordRecognized")
-        if len(word) > 0:
-            if word[0] == "yes":
-                speak_module.say("Great! Which one of the following topic would you like to know more about?")
-                speak_module.say(sections)
-                stopped = True
-            elif word[0] == "no":
-                speak_module.say("Ok.")
-except KeyboardInterrupt:
-
-    sys.exit()
+# try:
+#     while not stopped:
+#         word = mem_module.getData("WordRecognized")
+#         if len(word) > 0:
+#             if word[0] == "yes":
+#                 speak_module.say("Great! Which one of the following topic would you like to know more about?")
+#                 speak_module.say(sections)
+#                 stopped = True
+#             elif word[0] == "no":
+#                 speak_module.say("Ok.")
+# except KeyboardInterrupt:
+#
+#     sys.exit()
 
 # def onSpeechRecognized(msg, value):
 #     print type(value)
@@ -105,10 +109,12 @@ except KeyboardInterrupt:
 
 # id_speechRecognized = speechRecognized.signal.connect(functools.partial(onSpeechRecognized, "WordRecognized"))
 
-speak_module.say("Do you want more information?")
-understand_module.subscribe("Test_ASR")
-speak_module.say("Speech recognition engine started")
-#time.sleep(50)
+IP = "130.251.13.158"
+rec = prova.Recognizer(IP)
+
+word = rec.listen()
+rec.cleanMemory()
+print word
 
 #if(got_keyword != "Not Meatball"):
  #   print(got_keyword)
