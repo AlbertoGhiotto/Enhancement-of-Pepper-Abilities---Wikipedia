@@ -7,10 +7,18 @@ from prova import Recognizer
 import sys
 import functools
 import argparse
-from mediawiki import MediaWiki
+# from mediawiki import MediaWiki
 
 
-IP = "130.251.13.158"
+def print_sections(sections, level=0):
+    for s in sections:
+        print("%s: %s - %s" % ("*" * (level + 1), s.title, s.text[0:40]))
+        print_sections(s.sections, level + 1)
+
+#IP = "130.251.13.158"
+IP = "127.0.0.1"
+
+port = 57813
 
 # Manage audio inputs and outputs, it is used by all other audio modules
 audio_module = ALProxy("ALAudioDevice", IP, 9559)
@@ -37,7 +45,7 @@ understand_module = ALProxy("ALSpeechRecognition", IP, 9559)
 understand_module.setLanguage("English")  # Set the language
 
 # Define the keyword
-keyword = "Meatball"
+keyword = "Python"
 vocabulary = ["yes", "no"]
 vocabulary.append(keyword)
 
@@ -46,10 +54,12 @@ ny = wikipedia.page(keyword)
 imageStr = unicodedata.normalize('NFKD', ny.images[1]).encode('ascii','ignore') # To get the image
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') # To read the first phrase
 sections = ny.sections  # To get the name of the sections
-for i in sections:
-    print i
+#for i in sections:
+#    print i.title
 
 print sections
+
+print_sections(ny.sections)
 
 # Add the sections into the vocabulary
 vocabulary.extend(sections)  # We use extend to append a list to another list
