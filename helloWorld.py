@@ -3,12 +3,11 @@ from naoqi import ALProxy
 import wikipedia
 import unicodedata # To convert unicode (read from wikipedia) to string
 import time
+from mediawiki import MediaWiki
 from prova import Recognizer
 import sys
 import functools
 import argparse
-# from mediawiki import MediaWiki
-
 
 def print_sections(sections, level=0):
     for s in sections:
@@ -31,7 +30,7 @@ speak_module = ALProxy("ALTextToSpeech", IP, port)
 animated_module = ALProxy("ALAnimatedSpeech", IP, port)
 
 # Connects to movement service to give the autonomous ability while speaking(enabled by default)
-# movement_module = ALProxy("ALSpeakingMovement", IP, 9559)
+# movement_module = ALProxy("ALSpeakingMovement", IP, port)
 
 # Connects to tablet proxy to display image
 #tablet_module = ALProxy("ALTabletService", IP, port)
@@ -49,17 +48,22 @@ keyword = "Barack Obama"
 vocabulary = ["yes", "no"]
 vocabulary.append(keyword)
 
+# Use MediaWiki API to extract sections since the other wikipedia API doesn't work
+wikipedia = MediaWiki()
+wikiPage = wikipedia.page(keyword)
+sections = wikiPage.sections
+print(sections)
+
 # Load and access data from full Wikipedia pages
 ny = wikipedia.page(keyword)
 imageStr = unicodedata.normalize('NFKD', ny.images[2]).encode('ascii','ignore') # To get the image
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') # To read the first phrase
-sections = ny.sections  # To get the name of the sections
-#for i in sections:
-#    print i.title
 
-print sections
+#categories = ny.categories
+#print(ny.categories)
+#print(wikipedia.WikipediaPage(keyword).section("Early life and career"))
 
-print_sections(ny.sections)
+time.sleep(2)
 
 # Add the sections into the vocabulary
 vocabulary.extend(sections)  # We use extend to append a list to another list
