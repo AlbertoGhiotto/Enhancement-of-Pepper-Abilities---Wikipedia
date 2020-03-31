@@ -21,31 +21,31 @@ IP = "127.0.0.1"
 port = 57813
 
 # Manage audio inputs and outputs, it is used by all other audio modules
-audio_module = ALProxy("ALAudioDevice", IP, 9559)
-mem_module = ALProxy("ALMemory", IP, 9559)
+#audio_module = ALProxy("ALAudioDevice", IP, port)
+mem_module = ALProxy("ALMemory", IP, port)
 
 # Connects to speech proxy to make the robot speak
-speak_module = ALProxy("ALTextToSpeech", IP, 9559)
+speak_module = ALProxy("ALTextToSpeech", IP, port)
 
 # Connection to ALAnimatedSpeech proxy: it can create more lively speech by annotating the text yourself with some instructions or by adding animations for some words with ALSpeakingMovement
-animated_module = ALProxy("ALAnimatedSpeech", IP, 9559)
+animated_module = ALProxy("ALAnimatedSpeech", IP, port)
 
 # Connects to movement service to give the autonomous ability while speaking(enabled by default)
 # movement_module = ALProxy("ALSpeakingMovement", IP, 9559)
 
 # Connects to tablet proxy to display image
-tablet_module = ALProxy("ALTabletService", IP, 9559)
+#tablet_module = ALProxy("ALTabletService", IP, port)
 
 # Connect to dialogue proxy, we need to create and upload a .top file
-dialogue_module = ALProxy("ALDialog", IP, 9559)
+dialogue_module = ALProxy("ALDialog", IP, port)
 dialogue_module.setLanguage("English")  # Set the language
 
 # Connects to speech proxy to make the robot understand what a human says
-understand_module = ALProxy("ALSpeechRecognition", IP, 9559)
-understand_module.setLanguage("English")  # Set the language
+#understand_module = ALProxy("ALSpeechRecognition", IP, port)
+#understand_module.setLanguage("English")  # Set the language
 
 # Define the keyword
-keyword = "Python"
+keyword = "Barack Obama"
 vocabulary = ["yes", "no"]
 vocabulary.append(keyword)
 
@@ -63,13 +63,13 @@ print_sections(ny.sections)
 
 # Add the sections into the vocabulary
 vocabulary.extend(sections)  # We use extend to append a list to another list
-understand_module.setVocabulary(vocabulary, False)
+#understand_module.setVocabulary(vocabulary, False)
 speak_module.say(keyword)
 
 # Display the image on the tablet
-tablet_module.showImage(imageStr)
+#tablet_module.showImage(imageStr)
 time.sleep(5)
-tablet_module.hideImage()
+#tablet_module.hideImage()
 
 # Say the summary
 speak_module.say(content)
