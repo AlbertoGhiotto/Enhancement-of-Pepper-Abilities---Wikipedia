@@ -51,7 +51,7 @@ vocabulary.append(keyword)
 
 # Load and access data from full Wikipedia pages
 ny = wikipedia.page(keyword)
-imageStr = unicodedata.normalize('NFKD', ny.images[1]).encode('ascii','ignore') # To get the image
+imageStr = unicodedata.normalize('NFKD', ny.images[2]).encode('ascii','ignore') # To get the image
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') # To read the first phrase
 sections = ny.sections  # To get the name of the sections
 #for i in sections:
@@ -68,11 +68,11 @@ speak_module.say(keyword)
 
 # Display the image on the tablet
 tablet_module.showImage(imageStr)
-time.sleep(1)
+time.sleep(5)
 tablet_module.hideImage()
 
 # Say the summary
-# speak_module.say(content)
+speak_module.say(content)
 
 time.sleep(1)
 
