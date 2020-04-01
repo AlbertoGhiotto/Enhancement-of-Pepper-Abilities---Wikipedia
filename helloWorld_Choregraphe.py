@@ -9,8 +9,15 @@ import sys
 import functools
 import argparse
 
+def print_sections(sections, level=0):
+    for s in sections:
+        print("%s: %s - %s" % ("*" * (level + 1), s.title, s.text[0:40]))
+        print_sections(s.sections, level + 1)
+
 #IP = "130.251.13.158"
 IP = "127.0.0.1"
+
+
 port = 61972
 
 # Manage audio inputs and outputs, it is used by all other audio modules
@@ -43,8 +50,8 @@ vocabulary = ["yes", "no"]
 vocabulary.append(keyword)
 
 # Use MediaWiki API to extract sections since the other wikipedia API doesn't work
-wikipedia_mediawiki = MediaWiki()
-wikiPage = wikipedia_mediawiki.page(keyword)
+wikipedia = MediaWiki()
+wikiPage = wikipedia.page(keyword)
 sections = wikiPage.sections
 print(sections)
 
@@ -57,7 +64,7 @@ content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1))
 #print(ny.categories)
 #print(wikipedia.WikipediaPage(keyword).section("Early life and career"))
 
-# time.sleep(2)
+time.sleep(2)
 
 # Add the sections into the vocabulary
 vocabulary.extend(sections)  # We use extend to append a list to another list
@@ -66,71 +73,39 @@ speak_module.say(keyword)
 
 # Display the image on the tablet
 #tablet_module.showImage(imageStr)
-# time.sleep(5)
+time.sleep(5)
 #tablet_module.hideImage()
 
 # Say the summary
 speak_module.say(content)
 
-# time.sleep(1)
+time.sleep(1)
 
 # Starting the recognizer
 rec = Recognizer(IP)
 
-
 while True:
     speak_module.say("Do you want more information?")
 
-    # Faking the answer
-    user_input = "yes"
-    # user_input = "no"
+    # Listening for the answer
+    user_input = rec.listen()
+    rec.cleanMemory()
+    print user_input
 
     if user_input == "yes":
         speak_module.say("Great! Which one of the following topic would you like to know more about?")
-        for x in range(len(sections)/10):
-            print sections[x]
+        for i in sections:
+            speak_module.say(i)
+            print i
 
-            speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
+        # Listening for the answer
+        user_input_section = rec.listen()
+        rec.cleanMemory()
+        print user_input_section
 
-        # Faking the answer
-        user_input_section = "Education"
-
-        section_text = ny.section(user_input_section)
-
-        data = section_text.split(". ")
-
-
-        section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."
-
-        print(section_summary)
-
-        speak_module.say(unicodedata.normalize('NFKD', section_summary).encode('ascii', 'ignore'))
-
-        kappa = 0
-        speak_module.say("Do you want me to go on with this topic?")
-        # Faking the answer
-        user_input_continue_topic = "yes"
-        while user_input_continue_topic == "yes":
-
-            remaining_string = ""
-            kappa = kappa + 5
-            if(kappa > len(data)):
-                remaining = len(data) - (kappa - 5)
-                for x in remaining:
-                    remaining_string = remaining_string + data[x] + ". "
-                print("La fra puzza")
-                speak_module.say(unicodedata.normalize('NFKD', remaining_string).encode('ascii', 'ignore'))
-                break
-            else:
-                section_summary = data[0 + kappa] + ". " + data[1 + kappa ] + ". " + data[2 + kappa] + ". " + data[3 + kappa] + ". " + data[4 + kappa] + "."
-                speak_module.say(unicodedata.normalize('NFKD', section_summary).encode('ascii', 'ignore'))
-                speak_module.say("Do you want me to go on with this topic?")
-                # Faking the answer
-                user_input_continue_topic = "yes"
-                break
-            break
-
+        section_summary = unicodedata.normalize('NFKD', wikipedia.summary(ny.section(user_input_section), sentences=1)).encode('ascii','ignore')
         break
+
 
     elif user_input == "no":
         speak_module.say("Ok.")
@@ -141,33 +116,28 @@ while True:
         pass
 
 
+# understand_module.subscribe("WordRecognized")
+# # speechRecognized = mem_module.subscriber("WordRecognized")
+# stopped = False
 
-# while True:
-#     speak_module.say("Do you want more information?")
+# try:
+#     while not stopped:
+#         word = mem_module.getData("WordRecognized")
+#         if len(word) > 0:
+#             if word[0] == "yes":
+#                 speak_module.say("Great! Which one of the following topic would you like to know more about?")
+#                 speak_module.say(sections)
+#                 stopped = True
+#             elif word[0] == "no":
+#                 speak_module.say("Ok.")
+# except KeyboardInterrupt:
 #
-#     # Listening for the answer
-#     user_input = rec.listen()
-#     rec.cleanMemory()
-#     print user_input
-#
-#     if user_input == "yes":
-#         speak_module.say("Great! Which one of the following topic would you like to know more about?")
-#         for i in sections:
-#             speak_module.say(i)
-#             print i
-#
-#         # Listening for the answer
-#         user_input_section = rec.listen()
-#         rec.cleanMemory()
-#         print user_input_section
-#
-#         section_summary = unicodedata.normalize('NFKD', wikipedia.summary(ny.section(user_input_section), sentences=1)).encode('ascii','ignore')
-#         break
-#
-#     elif user_input == "no":
-#         speak_module.say("Ok.")
-#         break
-#
-#     else:
-#         speak_module.say("I'm sorry I didn't get that. Please answer yes or no.")
-#         pass
+#     sys.exit()
+
+# def onSpeechRecognized(msg, value):
+#     print type(value)
+#     print type(value[0])
+#     if value[1] > 0.4:
+#         got_keyword = value[0][6:-6]
+
+# id_speechRecognized = speechRecognized.signal.connect(functools.partial(onSpeechRecognized, "WordRecognized"))

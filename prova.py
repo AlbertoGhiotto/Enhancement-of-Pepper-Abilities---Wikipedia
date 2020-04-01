@@ -2,22 +2,24 @@ import qi
 import sys
 import time
 
+port = 61972
+
 class Recognizer():
     def __init__(self, ip):
 
         try:
             # Initialize qi framework.
             self.session = qi.Session()
-            self.session.connect("tcp://" + ip + ":" + str(9559))
-            print("\nConnected to Naoqi at ip \"" + ip + "\" on port " + str(9559) + ".\n")
+            self.session.connect("tcp://" + ip + ":" + str(port))
+            print("\nConnected to Naoqi at ip \"" + ip + "\" on port " + str(port) + ".\n")
 
         except RuntimeError:
-            print ("Can't connect to Naoqi at ip \"" + ip + "\" on port " + str(9559) + ".\n"
+            print ("Can't connect to Naoqi at ip \"" + ip + "\" on port " + str(port) + ".\n"
                                                                                                 "Please check your script arguments. Run with -h option for help.")
             sys.exit(1)
 
-        self.pMemory  = self.session.service("ALMemory") #, "130.251.13.158", 9559)
-        self.pASR     = self.session.service("ASR2") #, "130.251.13.158", 9559)
+        self.pMemory  = self.session.service("ALMemory") #, "130.251.13.158", port)
+        #self.pASR     = self.session.service("ASR2") #, "130.251.13.158", port)
         self.speech_reco_event = "Audio/RecognizedWords"
 
         self.initGoogleRecognition()
@@ -46,7 +48,7 @@ class Recognizer():
         Clean the memory right before returning, otherwise the same input will be returned every time this function is
         called even if the user did not talk anymore.
         '''
-        self.pASR.startReco("English", False, True)
+        #self.pASR.startReco("English", False, True)
         _timeout = 15
         start_time_no_input = time.time()
         start_time_silence = time.time() + 3600
