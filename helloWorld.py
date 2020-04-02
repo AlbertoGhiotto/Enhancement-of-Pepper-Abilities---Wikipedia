@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import naoqi
 from naoqi import ALProxy
 import wikipedia
@@ -8,6 +9,40 @@ from prova import Recognizer
 import sys
 import functools
 import argparse
+
+
+def answerQuestion(question, acceptedAnswer, model):
+    print(question)
+    if model == 1:
+        for x in range(len(acceptedAnswer)/10):
+            #speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
+            print(sections[x])
+        print("Another section")
+
+    while True:
+
+        user_answer = raw_input()
+
+        if user_answer in acceptedAnswer:
+            answer = user_answer
+            return answer
+        elif user_answer =="Another section":
+            return "Another section"
+        else:
+            print("Sorry! I didn't get that!")
+            if model == 1:      # corresponds to sections
+                print("Please answer with just the name of the section")
+                #answer = answerQuestion(question, acceptedAnswer, model)
+                pass
+            elif model == 2:    # corresponds to yes/no
+                print("Please answer with just yes or no")
+                pass
+            # else:
+            #     # we'll see
+            #     pass
+
+
+
 
 #IP = "130.251.13.158"
 # IP = "127.0.0.1"
@@ -77,49 +112,41 @@ print(content)
 # Starting the recognizer
 # rec = Recognizer(IP)
 
-
 while True:
-    #speak_module.say("Do you want more information?")
-    print("Do you want more information?")
-
-    # Faking the answer
-    user_input = raw_input()
+    user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
 
     if user_input == "yes":
-        #speak_module.say("Great! Which one of the following topic would you like to know more about?")
-        print("Great! Which one of the following topic would you like to know more about?")
-        for x in range(len(sections)/10):
-            #speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
-            print(sections[x])
 
         while True:
-            # Faking the answer
-            user_input_section = raw_input()
+
+            user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
 
             if user_input_section in sections:
                 section_text = ny.section(user_input_section)
                 data = section_text.split(". ")
                 section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."
-                # speak_module.say(unicodedata.normalize('NFKD', section_summary).encode('ascii', 'ignore'))
-                print(section_summary)
-                break
-            else:
-                # speak_module.say("I'm sorry I didn't get that. Please answer with just the name of the section.")
-                print("I'm sorry I didn't get that. Please answer with just the name of the section.")
 
+                print(section_summary)
+                user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
+
+                if user_input_section_another == "yes":
+                    print("Which section do you want to know more about?")
+                    pass
+                elif user_input_section_another == "no":
+                    break
+
+            elif user_input_section == "Another section":
+                for x in range(len(sections)):      # This command prints all the section since the user asked more info. With pepper the idea is to display them on the tablet
+                    # speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
+                    print(sections[x])
                 pass
 
         break
 
     elif user_input == "no":
-        speak_module.say("Ok.")
+        #speak_module.say("Ok.")
+        print("Ok! Però stai calmo :)")
         break
-
-    else:
-        #speak_module.say("I'm sorry I didn't get that. Please answer yes or no.")
-        print("I'm sorry I didn't get that. Please answer yes or no.")
-
-        pass
 
 
 
