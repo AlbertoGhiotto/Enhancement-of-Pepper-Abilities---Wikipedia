@@ -66,7 +66,7 @@ while True:
         user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
         while True:
             if user_input_section in sections:
-                section_text = ny.section(user_input_section)       # get the section's text
+                section_text = wikiPage.section(user_input_section)       # get the section's text
                 data = section_text.split(". ")                     # split the text every ". " character
                 section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."     # get the first five sentences
 
