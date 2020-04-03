@@ -18,6 +18,11 @@ def answerQuestion(question, acceptedAnswer, model):        # print the question
             #speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
             print(sections[x])
         print("Another section")
+    elif model == 1.5:                                      # prints the accepted answer when asking which section the user wants to talk about
+        for x in range(len(acceptedAnswer)):                # in this case we print every section
+            #speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
+            print(sections[x])
+
 
     while True:
         user_answer = raw_input()
@@ -113,10 +118,8 @@ while True:
 
     if user_input == "yes":
 
+        user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
         while True:
-
-            user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
-
             if user_input_section in sections:
                 section_text = ny.section(user_input_section)       # get the section's text
                 data = section_text.split(". ")                     # split the text every ". " character
@@ -126,15 +129,13 @@ while True:
                 user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
 
                 if user_input_section_another == "yes":
-                    print("Which section do you want to know more about?")
+                    user_input_section = answerQuestion("Which section do you want to know more about?", sections, 1)
                     pass                                            # restart the while
                 elif user_input_section_another == "no":
                     break                                           # get out of the while
 
-            elif user_input_section == "Another section":               # this prints all the section but by restarting the while it asks again the question
-                for x in range(len(sections)):      # This command prints all the section since the user asked more info. With pepper the idea is to display them on the tablet
-                    # speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
-                    print(sections[x])
+            elif user_input_section == "Another section":           # this prints all the section but by restarting the while it asks again the question
+                user_input_section = answerQuestion("Here are all the sections. Which one are you interested in?", sections, 1.5)
                 pass                                                # restart the while
         break
 
