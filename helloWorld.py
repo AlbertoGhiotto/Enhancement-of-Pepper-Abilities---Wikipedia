@@ -11,20 +11,19 @@ import functools
 import argparse
 
 
-def answerQuestion(question, acceptedAnswer, model):
+def answerQuestion(question, acceptedAnswer, model):        # print the question based on the model parameter
     print(question)
-    if model == 1:
+    if model == 1:                                          # prints the accepted answer when asking which section the user wants to talk about
         for x in range(len(acceptedAnswer)/10):
             #speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
             print(sections[x])
         print("Another section")
 
     while True:
-
         user_answer = raw_input()
 
-        if user_answer in acceptedAnswer:
-            answer = user_answer
+        if user_answer in acceptedAnswer:               # if the user's answer is contained in the list of accepted answer
+            answer = user_answer                        # simply return it to the main program
             return answer
         elif user_answer =="Another section":
             return "Another section"
@@ -41,12 +40,9 @@ def answerQuestion(question, acceptedAnswer, model):
             #     # we'll see
             #     pass
 
-
-
-
-#IP = "130.251.13.158"
-# IP = "127.0.0.1"
-# port = 61972
+# IP = "130.251.13.158"
+# IP = "127.0.0.1"      # localhost
+# port = 61972          # set the port as in choregraphe
 #
 # # Manage audio inputs and outputs, it is used by all other audio modules
 # #audio_module = ALProxy("ALAudioDevice", IP, port)
@@ -69,13 +65,13 @@ def answerQuestion(question, acceptedAnswer, model):
 # dialogue_module.setLanguage("English")  # Set the language
 
 # Connects to speech proxy to make the robot understand what a human says
-#understand_module = ALProxy("ALSpeechRecognition", IP, port)
-#understand_module.setLanguage("English")  # Set the language
+# understand_module = ALProxy("ALSpeechRecognition", IP, port)
+# understand_module.setLanguage("English")  # Set the language
 
 # Define the keyword
 keyword = "Barack Obama"
-vocabulary = ["yes", "no"]
-vocabulary.append(keyword)
+# vocabulary = ["yes", "no"]
+# vocabulary.append(keyword)
 
 # Use MediaWiki API to extract sections since the other wikipedia API doesn't work
 wikipedia_mediawiki = MediaWiki()
@@ -85,7 +81,7 @@ sections = wikiPage.sections
 
 # Load and access data from full Wikipedia pages
 ny = wikipedia.page(keyword)
-imageStr = unicodedata.normalize('NFKD', ny.images[2]).encode('ascii','ignore') # To get the image
+# imageStr = unicodedata.normalize('NFKD', ny.images[2]).encode('ascii','ignore') # To get the image
 content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1)).encode('ascii','ignore') # To read the first phrase
 
 #categories = ny.categories
@@ -95,7 +91,7 @@ content = unicodedata.normalize('NFKD', wikipedia.summary(keyword, sentences=1))
 # time.sleep(2)
 
 # Add the sections into the vocabulary
-vocabulary.extend(sections)  # We use extend to append a list to another list
+# vocabulary.extend(sections)  # We use extend to append a list to another list
 #understand_module.setVocabulary(vocabulary, False)
 # speak_module.say(keyword)
 
@@ -113,7 +109,7 @@ print(content)
 # rec = Recognizer(IP)
 
 while True:
-    user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+    user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
 
     if user_input == "yes":
 
@@ -122,31 +118,30 @@ while True:
             user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
 
             if user_input_section in sections:
-                section_text = ny.section(user_input_section)
-                data = section_text.split(". ")
-                section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."
+                section_text = ny.section(user_input_section)       # get the section's text
+                data = section_text.split(". ")                     # split the text every ". " character
+                section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."     # get the first five sentences
 
-                print(section_summary)
+                print(section_summary)                              # print the first five sentences
                 user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
 
                 if user_input_section_another == "yes":
                     print("Which section do you want to know more about?")
-                    pass
+                    pass                                            # restart the while
                 elif user_input_section_another == "no":
-                    break
+                    break                                           # get out of the while
 
-            elif user_input_section == "Another section":
+            elif user_input_section == "Another section":               # this prints all the section but by restarting the while it asks again the question
                 for x in range(len(sections)):      # This command prints all the section since the user asked more info. With pepper the idea is to display them on the tablet
                     # speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
                     print(sections[x])
-                pass
-
+                pass                                                # restart the while
         break
 
     elif user_input == "no":
         #speak_module.say("Ok.")
         print("Ok! Però stai calmo :)")
-        break
+        break                                                       # get out of the while
 
 
 
