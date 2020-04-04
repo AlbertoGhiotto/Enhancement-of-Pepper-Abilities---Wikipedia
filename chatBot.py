@@ -63,6 +63,30 @@ def keywordExtraction():
 
         return keyword_sentences[0]
 
+
+def presentSection(sections):
+    user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
+    while True:
+        if user_input_section in sections and user_input_section != "Another section":
+            section_text = wikiPage.section(user_input_section)  # get the section's text
+            data = section_text.split(". ")  # split the text every ". " character
+            section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."  # get the first five sentences
+
+            print(section_summary)  # print the first five sentences
+            user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
+
+            if user_input_section_another == "yes":
+                user_input_section = answerQuestion("Which section do you want to know more about?", sections, 1)
+                pass  # restart the while
+            elif user_input_section_another == "no":
+                break  # get out of the while
+
+        elif user_input_section == "Another section":  # this prints all the section but by restarting the while it asks again the question
+            sections.remove("Another section")  # remove the element which was added for the use in "checkAnswer" function
+            user_input_section = answerQuestion("Here are all the sections. Which one are you interested in?", sections, 1.5)
+            pass  # restart the while
+
+
 while True:
     # Manage the keyword
     keyword = keywordExtraction()
@@ -81,6 +105,7 @@ while True:
 
     wikiPage = wikipedia_mediawiki.page(keyword)
     sections = wikiPage.sections
+    categories = wikiPage.categories
     content = wikiPage.summarize(sentences=1)
 
     # Say the summary
@@ -90,26 +115,7 @@ while True:
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
         if user_input == "yes":
-            user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
-            while True:
-                if user_input_section in sections and user_input_section != "Another section":
-                    section_text = wikiPage.section(user_input_section)       # get the section's text
-                    data = section_text.split(". ")                     # split the text every ". " character
-                    section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."     # get the first five sentences
-
-                    print(section_summary)                              # print the first five sentences
-                    user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
-
-                    if user_input_section_another == "yes":
-                        user_input_section = answerQuestion("Which section do you want to know more about?", sections, 1)
-                        pass                                            # restart the while
-                    elif user_input_section_another == "no":
-                        break                                           # get out of the while
-
-                elif user_input_section == "Another section":           # this prints all the section but by restarting the while it asks again the question
-                    sections.remove("Another section")                  # remove the element which was added for the use in "checkAnswer" function
-                    user_input_section = answerQuestion("Here are all the sections. Which one are you interested in?", sections, 1.5)
-                    pass                                                # restart the while
+            presentSection(sections)
             break
 
         elif user_input == "no":
