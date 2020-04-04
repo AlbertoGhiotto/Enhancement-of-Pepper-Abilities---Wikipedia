@@ -6,13 +6,10 @@ from mediawiki import exceptions
 import time
 
 
-def checkAnswer(answer, acceptedAnswer):
-    #answers = answer.split(" ")
+def checkAnswer(answer, acceptedAnswer):            # check is one of the accepted answer is contained in the user's answer
     for i in range(len(acceptedAnswer)):
-       # for j in range(len(answers)):
         if acceptedAnswer[i] in answer:
-            # if answers[j] == acceptedAnswer[i]:
-            return [True, acceptedAnswer[i]]
+            return [True, acceptedAnswer[i]]        # the answer was found, return it
     return [False, False]
 
 
@@ -31,8 +28,8 @@ def answerQuestion(question, acceptedAnswer, model):        # print the question
     while True:
         user_answer = raw_input()
         # print(acceptedAnswer)
-        if user_answer in acceptedAnswer:               # if the user's answer is contained in the list of accepted answer
-            return user_answer                                                                               # simply return it to the main program
+        if user_answer in acceptedAnswer:                           # if the user's answer is contained in the list of accepted answer
+            return user_answer                                      # simply return it to the main program
         elif checkAnswer(user_answer, acceptedAnswer)[0]:
             return checkAnswer(user_answer, acceptedAnswer)[1]
         else:
@@ -45,8 +42,7 @@ def answerQuestion(question, acceptedAnswer, model):        # print the question
                 pass
 
 
-while True:
-    # Manage the keyword
+def keywordExtraction():
     while True:
         keyword_sentence = raw_input()
 
@@ -55,13 +51,23 @@ while True:
         elif "about " in keyword_sentence:
             keyword_sentences = keyword_sentence.split("about ")
         else:
-            print("I'm sorry I didn't get that! What to you want to know?")
-            continue
+            try:
+                wikipedia_mediawiki = MediaWiki()
+                wikiPage = wikipedia_mediawiki.page(keyword_sentence)
+                return keyword_sentence
+            except:
+                print("I'm sorry I didn't get that! What to you want to know?")
+                continue
 
         keyword_sentences = keyword_sentences[1].split("?")
 
-        keyword = keyword_sentences[0]
+        return keyword_sentences[0]
 
+while True:
+    # Manage the keyword
+    keyword = keywordExtraction()
+
+    while True:
         # Use MediaWiki API
         wikipedia_mediawiki = MediaWiki()
         try:
@@ -69,7 +75,8 @@ while True:
             break
         except:
             print("The information you want are not available on wikipedia! Try with something else!")
-            print("What to you want to know?")
+            print("What do you want to know?")
+            keyword = keywordExtraction()
             pass
 
     wikiPage = wikipedia_mediawiki.page(keyword)
