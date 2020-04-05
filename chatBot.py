@@ -20,7 +20,6 @@ def parenthesesRemover(sentence):
         return result
 
 
-
 def checkAnswer(answer, acceptedAnswer):            # check is one of the accepted answer is contained in the user's answer
     for i in range(len(acceptedAnswer)):
         if acceptedAnswer[i] in answer:
@@ -61,6 +60,8 @@ def keywordExtraction():
 
         if "is " in keyword_sentence:
             keyword_sentences = keyword_sentence.split("is ")
+        elif "are " in keyword_sentence:
+            keyword_sentences = keyword_sentence.split("are ")
         elif "about " in keyword_sentence:
             keyword_sentences = keyword_sentence.split("about ")
         else:
