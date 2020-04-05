@@ -6,6 +6,21 @@ from mediawiki import exceptions
 import time
 
 
+def parenthesesRemover(sentence):
+        # Returns a copy of 'sentence' with any parenthesized text removed. Nested parentheses are handled.
+        result = ''
+        paren_level = 0
+        for ch in sentence:
+            if ch == '(':
+                paren_level += 1
+            elif (ch == ')') and paren_level:
+                paren_level -= 1
+            elif not paren_level:
+                result += ch
+        return result
+
+
+
 def checkAnswer(answer, acceptedAnswer):            # check is one of the accepted answer is contained in the user's answer
     for i in range(len(acceptedAnswer)):
         if acceptedAnswer[i] in answer:
@@ -22,19 +37,17 @@ def answerQuestion(question, acceptedAnswer, model):        # print the question
         acceptedAnswer.append("Another section")            # add this element to the accepted answer list in order to being able to detect it with the "checkAnswer" function
     elif model == 1.5:                                      # prints the accepted answer when asking which section the user wants to talk about
         for x in range(len(acceptedAnswer)):                # in this case we print every section
-            # speak_module.say(unicodedata.normalize('NFKD', sections[x]).encode('ascii', 'ignore'))
             print(sections[x])
 
     while True:
         user_answer = raw_input()
-        # print(acceptedAnswer)
         if user_answer in acceptedAnswer:                           # if the user's answer is contained in the list of accepted answer
             return user_answer                                      # simply return it to the main program
         elif checkAnswer(user_answer, acceptedAnswer)[0]:
             return checkAnswer(user_answer, acceptedAnswer)[1]
         else:
             print("Sorry! I didn't get that!")
-            if model == 1:      # corresponds to sections
+            if model == 1 or model == 1.5:      # corresponds to sections
                 print("Please answer with just the name of the section")
                 pass
             elif model == 2:    # corresponds to yes/no
@@ -107,6 +120,7 @@ while True:
     sections = wikiPage.sections
     categories = wikiPage.categories
     content = wikiPage.summarize(sentences=1)
+    content = parenthesesRemover(content)
 
     # Say the summary
     print("Great! That's what I know about " + keyword + "!")
