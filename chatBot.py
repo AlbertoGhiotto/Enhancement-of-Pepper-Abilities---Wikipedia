@@ -30,14 +30,16 @@ def checkAnswer(answer, acceptedAnswer):            # check is one of the accept
 def answerQuestion(question, acceptedAnswer, model):        # print the question based on the model parameter
     print(question)
     if model == 1:                                          # prints the accepted answer when asking which section the user wants to talk about
-        for x in range(len(acceptedAnswer)/10):
-            print(sections[x])
+        for x in range(len(acceptedAnswer)/7):
+            print(acceptedAnswer[x])
         print("Another section")
         acceptedAnswer.append("Another section")            # add this element to the accepted answer list in order to being able to detect it with the "checkAnswer" function
     elif model == 1.5:                                      # prints the accepted answer when asking which section the user wants to talk about
         for x in range(len(acceptedAnswer)):                # in this case we print every section
-            print(sections[x])
-
+            print(acceptedAnswer[x])
+    elif model == 3:                                        #
+        for x in range(len(acceptedAnswer)-1):
+            print(acceptedAnswer[x+1])
     while True:
         user_answer = raw_input()
         if user_answer in acceptedAnswer:                           # if the user's answer is contained in the list of accepted answer
@@ -48,10 +50,10 @@ def answerQuestion(question, acceptedAnswer, model):        # print the question
             print("Sorry! I didn't get that!")
             if model == 1 or model == 1.5:      # corresponds to sections
                 print("Please answer with just the name of the section")
-                pass
-            elif model == 2:    # corresponds to yes/no
+            elif model == 2:                    # corresponds to yes/no
                 print("Please answer with just yes or no")
-                pass
+            elif model == 3:                     # corresponds to suggestions
+                print("Please answer with just the name of the suggestion")
 
 
 def keywordExtraction():
@@ -101,13 +103,29 @@ def presentSection(sections):
             pass  # restart the while
 
 
+def presentSuggestion(suggestions):
+    user_input_suggestion = answerQuestion("Great! Which one of the following related topic would you like to know more about?", suggestions, 3)
+    while True:
+        if user_input_suggestion in suggestions:
+            suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)
+            content = suggestedPage.summarize(sentences=1)
+            content = parenthesesRemover(content)
+            print(content)  # print the first sentence
+            break
+        else:
+            user_input_suggestion = answerQuestion("I'm sorry I didn't get that, please answer with just the name of the related topic", suggestions, 3)
+
+
+behaviour = 0
+
 while True:
     # Manage the keyword
     keyword = keywordExtraction()
 
+    # Use MediaWiki API
+    wikipedia_mediawiki = MediaWiki()
+
     while True:
-        # Use MediaWiki API
-        wikipedia_mediawiki = MediaWiki()
         try:
             wikiPage = wikipedia_mediawiki.page(keyword)
             break
@@ -122,6 +140,7 @@ while True:
     categories = wikiPage.categories
     content = wikiPage.summarize(sentences=1)
     content = parenthesesRemover(content)
+    suggestions = wikipedia_mediawiki.search(keyword, 5, False)
 
     # Say the summary
     print("Great! That's what I know about " + keyword + "!")
@@ -130,7 +149,13 @@ while True:
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
         if user_input == "yes":
-            presentSection(sections)
+            if behaviour == 0:
+                presentSection(sections)
+
+            elif behaviour == 1:
+                presentSuggestion(suggestions)
+
+            behaviour = (behaviour + 1) % 2
             break
 
         elif user_input == "no":
