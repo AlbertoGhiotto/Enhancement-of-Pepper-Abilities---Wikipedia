@@ -1,10 +1,17 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import wikipedia
 import unicodedata               # To convert unicode (read from wikipedia) to string
 from mediawiki import MediaWiki
-from mediawiki import exceptions
-import time
+# from mediawiki import exceptions
+# import time
+# from gensim.test.utils import common_corpus
+# from gensim.models import LdaSeqModel
+import meaningcloud
+import topicExtractor
 
+# ldaseq = LdaSeqModel(corpus=common_corpus, time_slice=[2, 4, 3], num_topics=2, chunksize=1)
 
 def parenthesesRemover(sentence):
         # Returns a copy of 'sentence' with any parenthesized text removed. Nested parentheses are handled.
@@ -142,7 +149,7 @@ while True:
     for x in range(len(sections)):
         sections[x] = sections[x].lower()
     categories = wikiPage.categories
-    content = wikiPage.summarize(sentences=1)
+    content = wikiPage.summarize(sentences=10)
     content = parenthesesRemover(content)
     suggestions = wikipedia_mediawiki.search(keyword, 5, False)
     for x in range(len(suggestions)):
@@ -152,6 +159,7 @@ while True:
     # Say the summary
     print("Great! That's what I know about " + keyword + "!")
     print(content)
+    print(topicExtractor.extractTopic(content))
 
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
