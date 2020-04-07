@@ -74,11 +74,11 @@ def keywordExtraction():
         else:
             try:
                 wikipedia_mediawiki = MediaWiki()
-                wikiPage = wikipedia_mediawiki.page(keyword_sentence)
+                wikiPage = wikipedia_mediawiki.page(keyword_sentence, auto_suggest=False)
                 return keyword_sentence
             except:
                 try:
-                    wikiPage = wikipedia_mediawiki.page(keyword_sentence, auto_suggest=False)
+                    wikiPage = wikipedia_mediawiki.page(keyword_sentence)
                     return keyword_sentence
                 except:
                     print("I'm sorry I didn't get that! What to you want to know?")
@@ -126,7 +126,33 @@ def presentSuggestion(suggestions):
             user_input_suggestion = answerQuestion("I'm sorry I didn't get that, please answer with just the name of the related topic", suggestions, 3)
 
 
-behaviour = 0
+def topicproposer(topic, type):
+    if (type == "City" or type == "Country" or type == "Adm1" or type == "Continent" or type == "GeoPoliticalEntity" or type == "Park" or type =="Location" or type == "NaturalReserve"):
+        print("Have you ever been in " + topic + "?")
+    elif (type == "FullName" or type == "FirstName"):
+        print("Have you ever heard about " + topic + "?")
+    elif (type == "University"):
+        print("Did you go to university?")
+    elif (type == "Game"):
+        print("Have you ever played " + topic + "?")
+    elif (type == "SoftwareCompany" or type == "MediaCompany" or type == "RetailingCompany" or type == "TechnologyEquipmentCompany" or type == "ConsumerDurablesCompany" or type == "AutomobileCompany" or type == "IndustrianCompany" or type == "Company"):
+        print("I know " + topic + "! Would you like to work for this company?")
+    elif (type == "War"):
+        print("Have you ever lived under a period of war?")
+    elif (type == "SportsTeam"):
+        print("Do you like " + topic + "?")
+    elif (type == "Broadcast" or type == "Movie"):
+        print("Have you ever saw " + topic + "?")
+    elif (type == "Book"):
+        print("Do you like reading books?")
+
+
+behaviour = 2
+
+knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
+               "University", "Game","SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
+               "ConsumerDurablesCompany",
+               "AutomobileCompany", "IndustrianCompany", "Company", "War", "SportsTeam", "Movie", "Broadcast", "Book"]
 
 while True:
     # Manage the keyword
@@ -137,11 +163,11 @@ while True:
 
     while True:
         try:
-            wikiPage = wikipedia_mediawiki.page(keyword)
+            wikiPage = wikipedia_mediawiki.page(keyword, auto_suggest=False)
             break
         except:
             try:
-                wikiPage = wikipedia_mediawiki.page(keyword, auto_suggest=False)
+                wikiPage = wikipedia_mediawiki.page(keyword)
                 break
             except:
                 print("The information you want are not available on wikipedia! Try with something else!")
@@ -152,20 +178,20 @@ while True:
     sections = wikiPage.sections
     for x in range(len(sections)):
         sections[x] = sections[x].lower()
-    categories = wikiPage.categories
-    content = wikiPage.summarize(sentences=10)
+    content = wikiPage.summarize(sentences=4)
     content = parenthesesRemover(content)
     suggestions = wikipedia_mediawiki.search(keyword, 5, False)
     for x in range(len(suggestions)):
         suggestions[x] = suggestions[x].lower()
-    # categories = wikiPage.categories
 
     # Say the summary
     print("Great! That's what I know about " + keyword + "!")
     print(content)
-    # print(topicExtractor.extractTopic(content))
-    print(topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore')))
 
+    topics = topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))
+    # TODO: Manage case when the no entity is detected
+
+    print(topics)
 
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
@@ -176,7 +202,18 @@ while True:
             elif behaviour == 1:
                 presentSuggestion(suggestions)
 
-            behaviour = (behaviour + 1) % 2
+            elif behaviour == 2:
+                for index in range(len(topics)):
+                    if(topics[index][1] in knownTopics ):
+                        topicproposer(topics[index][0],topics[index][1])
+                        raw_input()
+                        print("Oh! That's very interesting!")
+                        break
+                else:
+                    presentSuggestion(suggestions)
+
+
+            behaviour = (behaviour + 1) % 3
             break
 
         elif user_input == "no":
