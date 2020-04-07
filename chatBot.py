@@ -1,30 +1,27 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import wikipedia
 import unicodedata               # To convert unicode (read from wikipedia) to string
 from mediawiki import MediaWiki
-# from mediawiki import exceptions
-# import time
-# from gensim.test.utils import common_corpus
-# from gensim.models import LdaSeqModel
-import meaningcloud
 import topicExtractor
 
-# ldaseq = LdaSeqModel(corpus=common_corpus, time_slice=[2, 4, 3], num_topics=2, chunksize=1)
 
 def parenthesesRemover(sentence):
-        # Returns a copy of 'sentence' with any parenthesized text removed. Nested parentheses are handled.
-        result = ''
-        paren_level = 0
-        for ch in sentence:
-            if ch == '(':
-                paren_level += 1
-            elif (ch == ')') and paren_level:
-                paren_level -= 1
-            elif not paren_level:
-                result += ch
-        return result
+    # Returns a copy of 'sentence' with any parenthesized text removed. Nested parentheses are handled.
+    result = ''
+    paren_level = 0
+    for ch in sentence:
+        if ch == '(':
+            paren_level += 1
+        elif (ch == ')') and paren_level:
+            paren_level -= 1
+        elif not paren_level:
+            result += ch
+
+    # unicodedata.normalize('NFKD', '—').encode('ascii', 'ignore')
+    result = result.replace('\n', ' ')
+
+    return result
 
 
 def checkAnswer(answer, acceptedAnswer):            # check is one of the accepted answer is contained in the user's answer
@@ -166,7 +163,9 @@ while True:
     # Say the summary
     print("Great! That's what I know about " + keyword + "!")
     print(content)
-    print(topicExtractor.extractTopic(content))
+    # print(topicExtractor.extractTopic(content))
+    print(topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore')))
+
 
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
