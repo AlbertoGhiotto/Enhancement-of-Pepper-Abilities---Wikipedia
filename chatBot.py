@@ -80,8 +80,12 @@ def keywordExtraction():
                 wikiPage = wikipedia_mediawiki.page(keyword_sentence)
                 return keyword_sentence
             except:
-                print("I'm sorry I didn't get that! What to you want to know?")
-                continue
+                try:
+                    wikiPage = wikipedia_mediawiki.page(keyword_sentence, auto_suggest=False)
+                    return keyword_sentence
+                except:
+                    print("I'm sorry I didn't get that! What to you want to know?")
+                    continue
 
         keyword_sentences = keyword_sentences[1].split("?")
 
@@ -139,12 +143,15 @@ while True:
             wikiPage = wikipedia_mediawiki.page(keyword)
             break
         except:
-            print("The information you want are not available on wikipedia! Try with something else!")
-            print("What do you want to know?")
-            keyword = keywordExtraction()
-            pass
+            try:
+                wikiPage = wikipedia_mediawiki.page(keyword, auto_suggest=False)
+                break
+            except:
+                print("The information you want are not available on wikipedia! Try with something else!")
+                print("What do you want to know?")
+                keyword = keywordExtraction()
 
-    wikiPage = wikipedia_mediawiki.page(keyword)
+    # wikiPage = wikipedia_mediawiki.page(keyword)
     sections = wikiPage.sections
     for x in range(len(sections)):
         sections[x] = sections[x].lower()
