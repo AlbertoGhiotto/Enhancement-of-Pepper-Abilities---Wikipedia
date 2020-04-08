@@ -248,8 +248,8 @@ while True:
                         raw_input()                                         # answer of the user about the topic
                         print("Oh! That's very interesting!")
                         break
-                # else:
-                presentSuggestion(suggestions)                          # if there is nothing known -> behaviour 0
+                else:
+                    presentSuggestion(suggestions)                          # if there is nothing known -> behaviour 0
 
             behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
             break

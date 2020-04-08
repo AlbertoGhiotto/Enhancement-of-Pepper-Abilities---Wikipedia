@@ -5,7 +5,7 @@ import wikipedia
 import unicodedata # To convert unicode (read from wikipedia) to string
 import time
 from mediawiki import MediaWiki
-from prova import Recognizer
+from recognizer import Recognizer
 import sys
 import functools
 import argparse
