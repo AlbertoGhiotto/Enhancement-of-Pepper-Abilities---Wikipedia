@@ -1,16 +1,21 @@
 # SoRob
 Repository for Social Robotics' project
 
+## Required Packages
+
+Install the [wikimedia API](https://github.com/barrust/mediawiki) with:
+
+``` pip install pymediawiki ``` 
+
+Install the python [meaningCloud API](https://github.com/MeaningCloud/meaningcloud-python) with:
+
+``` pip install MeaningCloud-python ``` 
+
+To launch the chat bot, run the ``` chatBotV2.py``` python script.
 
 
-topic_content_1 = ("topic: ~moreInfo\n"
-                   "language: en\n"
-                   "proposal: Do you want to know more information?\n"
-                   "u1: (yes) Great!\n"
-                   "u2: (no) Ok.\n")
 
-To get list of loaded topic 
-- dialogue_module.getLoadedTopics("English")
-
-To unload 'moreInfo' is the topic name got from the above function
-- dialogue_module.unloadTopic('moreInfo')   
+## Authors
+* Francesca Canale: francesca.canale.95@gmail.com
+* Tommaso Gruppi: tommygruppi@gmail.com
+* Alberto Ghiotto: alberto.ghiotto@hotmail.it
