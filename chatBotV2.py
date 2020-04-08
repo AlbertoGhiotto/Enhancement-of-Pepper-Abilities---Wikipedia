@@ -159,7 +159,7 @@ def presentSuggestion(suggestions):                     # Present the related to
 def topicProposer(topic, type):                 # Propose a conversation topic based on the type of the extracted topics
 
     if (type == "City" or type == "Country" or type == "Adm1" or type == "Continent" or type == "GeoPoliticalEntity" or type == "Park" or type =="Location" or type == "NaturalReserve"):
-        print("Have you ever been in " + topic + "?")
+        print("Have you ever been to " + topic + "?")
     elif (type == "FullName" or type == "FirstName"):
         print("Have you ever heard about " + topic + "?")
     elif (type == "University"):
@@ -178,13 +178,13 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
         print("Do you like reading books?")
 
 
-behaviour = 0
+behaviour = 2
 presenter = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
-               "University", "Game","SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
+               "University", "Game", "SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
                "ConsumerDurablesCompany",
-               "AutomobileCompany", "IndustrianCompany", "Company", "War", "SportsTeam", "Movie", "Broadcast", "Book"]
+               "AutomobileCompany", "IndustrialCompany", "Company", "War", "SportsTeam", "Movie", "Broadcast", "Book"]
 
 while True:
     # Manage the keyword
@@ -229,7 +229,11 @@ while True:
     # TODO: Manage case when the no entity is detected
 
     while True:
-        user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+        if behaviour != 2:
+            user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+        else:
+            user_input = "yes"          # to make the third behaviour work without user input
+
         if user_input == "yes":
             if behaviour == 0:
                 presentSection(sections)
@@ -244,8 +248,8 @@ while True:
                         raw_input()                                         # answer of the user about the topic
                         print("Oh! That's very interesting!")
                         break
-                else:
-                    presentSuggestion(suggestions)                          # if there is nothing known -> behaviour 0
+                # else:
+                presentSuggestion(suggestions)                          # if there is nothing known -> behaviour 0
 
             behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
             break
