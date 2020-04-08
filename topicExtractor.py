@@ -36,8 +36,8 @@ def extractTopic(text):
 
                 return results
 
-            else:
-                print("\tNo entities detected!\n")
+            # else:
+            #     print("\tNo entities detected!\n")
         else:
             if topics_response.getResponse() is None:
                 print("\nOh no! The request sent did not return a Json\n")

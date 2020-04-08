@@ -108,8 +108,6 @@ def keywordExtraction():                                    # Extract the keywor
         [page, auto_suggest] = checkWiki(keyword_sentences[0])
         if page:           # if it exists a wikipedia page about the keyword
             return [keyword_sentences[0], auto_suggest]
-        else:
-            pass
 
 
 def presentSection(sections):                           # Present the section chosen by the user
@@ -226,8 +224,7 @@ while True:
 
     # Topic of conversation
     topics = topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))      # extracting the topics from the page's content
-    # TODO: Manage case when the no entity is detected
-
+    
     while True:
         if behaviour != 2:
             user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
@@ -242,14 +239,13 @@ while True:
                 presentSuggestion(suggestions)
 
             elif behaviour == 2:
-                for index in range(len(topics)):
-                    if(topics[index][1] in knownTopics ):                   # check if in the extracted topic there is something known to ask
-                        topicProposer(topics[index][0],topics[index][1])    # [0] name of the topic, [1] type of the topic
-                        raw_input()                                         # answer of the user about the topic
-                        print("Oh! That's very interesting!")
-                        break
-                else:
-                    presentSuggestion(suggestions)                          # if there is nothing known -> behaviour 0
+                if topics is not None:
+                    for index in range(len(topics)):
+                        if(topics[index][1] in knownTopics ):                   # check if in the extracted topic there is something known to ask
+                            topicProposer(topics[index][0], topics[index][1])    # [0] name of the topic, [1] type of the topic
+                            raw_input()                                         # answer of the user about the topic
+                            print("Oh! That's very interesting!")
+                            break
 
             behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
             break
