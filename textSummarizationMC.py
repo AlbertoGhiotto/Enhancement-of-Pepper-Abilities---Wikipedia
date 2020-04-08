@@ -26,7 +26,7 @@ def textSummarization(text):
 
         # If there are no errors in the request, we print the output
         if summarization_response.isSuccessful():
-            print("\nThe request to 'Text Summarization' finished successfully!\n")
+            #print("\nThe request to 'Text Summarization' finished successfully!\n")
 
             summary = summarization_response.getSummary()
             if summary:
