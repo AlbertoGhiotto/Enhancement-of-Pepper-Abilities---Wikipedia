@@ -4,7 +4,10 @@
 import unicodedata               # To convert unicode (read from wikipedia) to string
 from mediawiki import MediaWiki
 import topicExtractor
+import textSummarizationMC
 
+def is_not_blank(s):
+    return bool(s and s.strip())
 
 def parenthesesRemover(sentence):
     # Returns a copy of 'sentence' with any parenthesized text removed. Nested parentheses are handled.
@@ -19,7 +22,7 @@ def parenthesesRemover(sentence):
             result += ch
 
     # unicodedata.normalize('NFKD', '—').encode('ascii', 'ignore')
-    result = result.replace('\n', ' ')
+    # result = result.replace('\n', ' ')
 
     return result
 
@@ -93,12 +96,18 @@ def presentSection(sections):
     user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
     while True:
         if user_input_section in sections and user_input_section != "another section":
-            user_input_section = user_input_section.capitalize()
+            user_input_section = user_input_section.capitalize()    # set the first letter uppercase for correspondence with API's format
             section_text = wikiPage.section(user_input_section)  # get the section's text
-            data = section_text.split(". ")  # split the text every ". " character
-            section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."  # get the first five sentences
-            section_summary = parenthesesRemover(section_summary)
+            # data = section_text.split(". ")  # split the text every ". " character
+            # section_summary = data[0] + ". " + data[1] + ". " + data[2] + ". " + data[3] + ". " + data[4] + "."  # get the first five sentences
+            print(section_text)
+            section_text = parenthesesRemover(section_text)
+            if isinstance(section_text, str):
+                section_text = section_text.decode('unicode-escape')
+
+            section_summary = textSummarizationMC.textSummarization((unicodedata.normalize('NFKD', section_text).encode('ascii', 'ignore')))
             print(section_summary)  # print the first five sentences
+            print(section_text)
             user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
 
             if user_input_section_another == "yes":
@@ -147,7 +156,7 @@ def topicproposer(topic, type):
         print("Do you like reading books?")
 
 
-behaviour = 2
+behaviour = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
                "University", "Game","SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
@@ -174,10 +183,17 @@ while True:
                 print("What do you want to know?")
                 keyword = keywordExtraction()
 
-    # wikiPage = wikipedia_mediawiki.page(keyword)
-    sections = wikiPage.sections
-    for x in range(len(sections)):
+    sections = wikiPage.sections        # get the list of section
+
+    for x in range(len(sections)):      # detecting the empty sections
+        if not is_not_blank(wikiPage.section(sections[x])):
+            sections[x] = None
+
+    sections = filter(None, sections)   # removing the empty sections
+
+    for x in range(len(sections)):      # set the first letter lower case to being user-friendlier :) (actually for speech to text)
         sections[x] = sections[x].lower()
+
     content = wikiPage.summarize(sentences=4)
     content = parenthesesRemover(content)
     suggestions = wikipedia_mediawiki.search(keyword, 5, False)
@@ -190,8 +206,6 @@ while True:
 
     topics = topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))
     # TODO: Manage case when the no entity is detected
-
-    print(topics)
 
     while True:
         user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)          # ask the question given in parameters
@@ -211,7 +225,6 @@ while True:
                         break
                 else:
                     presentSuggestion(suggestions)
-
 
             behaviour = (behaviour + 1) % 3
             break
