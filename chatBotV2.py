@@ -62,6 +62,7 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
             elif checkAnswer(user_answer, acceptedAnswer)[0]:
                 return checkAnswer(user_answer, acceptedAnswer)[1]
             else:
+                print("Try again")
                 continue
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
@@ -96,6 +97,8 @@ def isThereAKeyword(keyword_sentence):
         keyword_sentences = keyword_sentence.split("are ")
     elif "about " in keyword_sentence:  # for questions like "What do you know about - ?"
         keyword_sentences = keyword_sentence.split("about ")
+    elif checkWiki(keyword_sentence):
+        return [keyword_sentence, True]
     else:
         return [False, False]
     keyword_sentences = keyword_sentences[1].split("?")
@@ -287,6 +290,7 @@ while True:
     user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
     if user_another_topic == "yes":
         print("What do you want to know?")
+        keyword = raw_input()
         # restart the first while (keywordextraction)
     elif user_another_topic == "no":
         print("Ok! That's it for today, see you next time! Bye!")
