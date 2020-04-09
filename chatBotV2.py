@@ -118,7 +118,6 @@ def presentSection(sections, actualSection):                           # Present
                 if user_input_section == sections[x]:
                     user_input_section = actualSection[x]                   # get the corresponding case sensitive section
 
-            print(user_input_section)
             section_text = wikiPage.section(user_input_section)             # get the section's text
             section_text = parenthesesRemover(section_text)                 # remove the parenthesis from the text
 
