@@ -61,6 +61,8 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
                 return possibleKeyword
             elif checkAnswer(user_answer, acceptedAnswer)[0]:
                 return checkAnswer(user_answer, acceptedAnswer)[1]
+            else:
+                continue
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
         else:
@@ -98,7 +100,8 @@ def isThereAKeyword(keyword_sentence):
         return [False, False]
     keyword_sentences = keyword_sentences[1].split("?")
 
-    return [keyword_sentences[0], True ]
+    return [keyword_sentences[0], True]
+
 
 def keywordExtraction():                                    # Extract the keyword from user's input
 
