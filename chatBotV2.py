@@ -5,7 +5,7 @@ import unicodedata               # To convert unicode (read from wikipedia) to s
 from mediawiki import MediaWiki
 import topicExtractor
 import textSummarizationMC
-
+import copy
 
 def is_not_blank(str):
     # Check if str is an empty string
@@ -110,12 +110,15 @@ def keywordExtraction():                                    # Extract the keywor
             return [keyword_sentences[0], auto_suggest]
 
 
-def presentSection(sections):                           # Present the section chosen by the user
-
+def presentSection(sections, actualSection):                           # Present the section chosen by the user
     user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
     while True:
         if user_input_section in sections and user_input_section != "another section":
-            user_input_section = user_input_section.capitalize()            # set the first letter uppercase for correspondence with API's format
+            for x in range(len(actualSection)):
+                if user_input_section == sections[x]:
+                    user_input_section = actualSection[x]                   # get the corresponding case sensitive section
+
+            print(user_input_section)
             section_text = wikiPage.section(user_input_section)             # get the section's text
             section_text = parenthesesRemover(section_text)                 # remove the parenthesis from the text
 
@@ -124,7 +127,6 @@ def presentSection(sections):                           # Present the section ch
 
             section_summary = textSummarizationMC.textSummarization((unicodedata.normalize('NFKD', section_text).encode('ascii', 'ignore')))
             print(section_summary)                                          # print the summary obtained form textSummarization API
-            #print(section_text)
 
             user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
 
@@ -176,7 +178,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
         print("Do you like reading books?")
 
 
-behaviour = 2
+behaviour = 0
 presenter = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
@@ -201,6 +203,8 @@ while True:
         if not is_not_blank(wikiPage.section(sections[x])):
             sections[x] = None
     sections = filter(None, sections)       # removing the empty sections
+
+    actualSection = copy.copy(sections)     # make a shallow copy of the list to have the case sensitive sections list
 
     for x in range(len(sections)):          # set the first letter lower case to being user-friendlier :) (actually for speech to text)
         sections[x] = sections[x].lower()
@@ -233,7 +237,8 @@ while True:
 
         if user_input == "yes":
             if behaviour == 0:
-                presentSection(sections)
+                print(actualSection)
+                presentSection(sections, actualSection)
 
             elif behaviour == 1:
                 presentSuggestion(suggestions)
