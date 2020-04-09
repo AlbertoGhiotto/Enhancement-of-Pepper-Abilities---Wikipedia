@@ -55,6 +55,12 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
         user_answer = user_answer.lower()
         if user_answer in acceptedAnswer:                       # if the user's answer is exactly one of the accepted answers
             return user_answer                                  # simply return it to the main program
+        elif model == 4:
+            [possibleKeyword, flag] = isThereAKeyword(user_answer)
+            if(flag):
+                return possibleKeyword
+            elif checkAnswer(user_answer, acceptedAnswer)[0]:
+                return checkAnswer(user_answer, acceptedAnswer)[1]
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
         else:
@@ -80,6 +86,19 @@ def checkWiki(keyword):                     # Check if it exists a wikipedia pag
             print("I'm sorry the information you want are not available on wikipedia! Try with something else!")
             return [False, False]           # False = the page doesn't exist
 
+
+def isThereAKeyword(keyword_sentence):
+    if "is " in keyword_sentence:  # for questions like "Who is - ?"
+        keyword_sentences = keyword_sentence.split("is ")
+    elif "are " in keyword_sentence:  # for questions like "Who are the - ?"
+        keyword_sentences = keyword_sentence.split("are ")
+    elif "about " in keyword_sentence:  # for questions like "What do you know about - ?"
+        keyword_sentences = keyword_sentence.split("about ")
+    else:
+        return [False, False]
+    keyword_sentences = keyword_sentences[1].split("?")
+
+    return [keyword_sentences[0], True ]
 
 def keywordExtraction():                                    # Extract the keyword from user's input
 
@@ -186,9 +205,14 @@ knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Pa
                "ConsumerDurablesCompany",
                "AutomobileCompany", "IndustrialCompany", "Company", "War", "SportsTeam", "Movie", "Broadcast", "Book"]
 
+needKeyword = True
+
 while True:
-    # Manage the keyword
-    [keyword, suggest] = keywordExtraction()
+
+    if(needKeyword):
+        # Manage the keyword
+        [keyword, suggest] = keywordExtraction()
+        needKeyword = True
 
     # Use MediaWiki API
     wikipedia_mediawiki = MediaWiki()
@@ -237,7 +261,6 @@ while True:
 
         if user_input == "yes":
             if behaviour == 0:
-                print(actualSection)
                 presentSection(sections, actualSection)
 
             elif behaviour == 1:
@@ -253,16 +276,20 @@ while True:
                             break
 
             behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
-            
+
         elif user_input == "no":
             break
 
-
     # We'll be here only if the user does not want to know more about the topic -> ask if the user wants some other topic
-    user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 2)
+    user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
     if user_another_topic == "yes":
         print("What do you want to know?")
-        pass                # restart the first while (keywordextraction)
+        # restart the first while (keywordextraction)
     elif user_another_topic == "no":
         print("Ok! That's it for today, see you next time! Bye!")
         break               # get out of the while -> end of the program
+    else:
+        [pageExist, suggest] = checkWiki(user_another_topic)
+        if pageExist:
+            keyword = user_another_topic
+            needKeyword = False
