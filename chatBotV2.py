@@ -178,7 +178,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
         print("Do you like reading books?")
 
 
-behaviour = 0
+behaviour = 2
 presenter = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
@@ -253,8 +253,7 @@ while True:
                             break
 
             behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
-            break
-
+            
         elif user_input == "no":
             break
 
