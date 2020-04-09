@@ -52,6 +52,7 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
 
     while True:
         user_answer = raw_input()
+        user_answer = user_answer.lower()
         if user_answer in acceptedAnswer:                       # if the user's answer is exactly one of the accepted answers
             return user_answer                                  # simply return it to the main program
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
