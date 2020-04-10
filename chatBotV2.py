@@ -282,12 +282,8 @@ while True:
                             raw_input()                                         # answer of the user about the topic
                             print("Oh! That's very interesting!")
                             break
-                # else:
-                #     behaviour = (behaviour + 1) % 3
-                #     continue
 
                 behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
-            # break
         elif user_input == "no":
             break
 
@@ -296,8 +292,6 @@ while True:
     if user_another_topic == "yes":
         print("What do you want to know?")
         needKeyword = True
-        # keyword = raw_input()
-        # restart the first while (keywordextraction)
     elif user_another_topic == "no":
         print("Ok! That's it for today, see you next time! Bye!")
         break               # get out of the while -> end of the program
