@@ -57,12 +57,12 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
             return user_answer                                  # simply return it to the main program
         elif model == 4:
             [possibleKeyword, flag] = isThereAKeyword(user_answer)
-            if(flag):
+            if flag:
                 return possibleKeyword
             elif checkAnswer(user_answer, acceptedAnswer)[0]:
                 return checkAnswer(user_answer, acceptedAnswer)[1]
             else:
-                print("Try again")
+                print("Sorry I didn't get that! Are you interested in something else?")
                 continue
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
@@ -97,8 +97,6 @@ def isThereAKeyword(keyword_sentence):
         keyword_sentences = keyword_sentence.split("are ")
     elif "about " in keyword_sentence:  # for questions like "What do you know about - ?"
         keyword_sentences = keyword_sentence.split("about ")
-    elif checkWiki(keyword_sentence):
-        return [keyword_sentence, True]
     else:
         return [False, False]
     keyword_sentences = keyword_sentences[1].split("?")
@@ -137,7 +135,7 @@ def keywordExtraction():                                    # Extract the keywor
 
 
 def presentSection(sections, actualSection):                           # Present the section chosen by the user
-    user_input_section = answerQuestion("Great! Which one of the following topic would you like to know more about?", sections, 1)
+    user_input_section = answerQuestion("Great! Which one of the following sections would you like to know more about?", sections, 1)
     while True:
         if user_input_section in sections and user_input_section != "another section":
             for x in range(len(actualSection)):
@@ -203,7 +201,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
         print("Do you like reading books?")
 
 
-behaviour = 2
+behaviour = 0
 presenter = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
@@ -268,9 +266,13 @@ while True:
         if user_input == "yes":
             if behaviour == 0:
                 presentSection(sections, actualSection)
+                behaviour = (behaviour + 1) % 3  # incrementing the behavoiur so that is not always the same
+                break
 
             elif behaviour == 1:
                 presentSuggestion(suggestions)
+                behaviour = (behaviour + 1) % 3  # incrementing the behavoiur so that is not always the same
+                break
 
             elif behaviour == 2:
                 if topics is not None:
@@ -280,9 +282,12 @@ while True:
                             raw_input()                                         # answer of the user about the topic
                             print("Oh! That's very interesting!")
                             break
+                # else:
+                #     behaviour = (behaviour + 1) % 3
+                #     continue
 
-            behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
-
+                behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
+            # break
         elif user_input == "no":
             break
 
@@ -290,7 +295,8 @@ while True:
     user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
     if user_another_topic == "yes":
         print("What do you want to know?")
-        keyword = raw_input()
+        needKeyword = True
+        # keyword = raw_input()
         # restart the first while (keywordextraction)
     elif user_another_topic == "no":
         print("Ok! That's it for today, see you next time! Bye!")
