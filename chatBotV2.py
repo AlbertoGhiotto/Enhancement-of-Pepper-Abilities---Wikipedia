@@ -230,6 +230,8 @@ while True:
     for x in range(len(sections)):          # detecting the empty sections
         if not is_not_blank(wikiPage.section(sections[x])):
             sections[x] = None
+        # if "\u0x8211" in sections[x]:         # trying to remove the sections with the - not recognised by system (e.g illinois state senator (1997–2004))
+        #     sections[x] = None
     sections = filter(None, sections)       # removing the empty sections
 
     actualSection = copy.copy(sections)     # make a shallow copy of the list to have the case sensitive sections list
@@ -245,6 +247,7 @@ while True:
     # Content
     content = wikiPage.summarize(sentences=4)                   # get the summary of the wikipedia page
     content = parenthesesRemover(content)                       # remove the parenteses
+    content = content.split("\n")[0]                            # take everything until a \n. Done to avoid going up to sections for short pages
     if presenter == 0:
         print("Great! That's what I know about " + keyword + "!")
     elif presenter == 1:
