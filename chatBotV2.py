@@ -55,13 +55,13 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
         user_answer = user_answer.lower()
         if user_answer in acceptedAnswer:                       # if the user's answer is exactly one of the accepted answers
             return user_answer                                  # simply return it to the main program
-        elif model == 4:
-            [possibleKeyword, flag] = isThereAKeyword(user_answer)
-            if flag:
+        elif model == 4:                                                # corresponds to the last question "Do you want to talk about something else?"
+            [possibleKeyword, flag] = isThereAKeyword(user_answer)      # check if there is a keyword in the user's answer
+            if flag:                                                    # flag = True means that a keyword is found
                 return possibleKeyword
-            elif checkAnswer(user_answer, acceptedAnswer)[0]:
+            elif checkAnswer(user_answer, acceptedAnswer)[0]:           # if keyword not found, check if there is "yes/no" in the user's answer
                 return checkAnswer(user_answer, acceptedAnswer)[1]
-            else:
+            else:                                                       # if keyword not found + there is no "yes/no"
                 print("Sorry I didn't get that! Are you interested in something else?")
                 continue
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
@@ -91,12 +91,15 @@ def checkWiki(keyword):                     # Check if it exists a wikipedia pag
 
 
 def isThereAKeyword(keyword_sentence):
-    if "is " in keyword_sentence:  # for questions like "Who is - ?"
+    # Check if in the answer to the question "Do you want to know about something else?" there is a possible keyword
+    if "is " in keyword_sentence:           # for questions like "Who is - ?"
         keyword_sentences = keyword_sentence.split("is ")
-    elif "are " in keyword_sentence:  # for questions like "Who are the - ?"
+    elif "are " in keyword_sentence:        # for questions like "Who are the - ?"
         keyword_sentences = keyword_sentence.split("are ")
-    elif "about " in keyword_sentence:  # for questions like "What do you know about - ?"
+    elif "about " in keyword_sentence:      # for questions like "What do you know about - ?"
         keyword_sentences = keyword_sentence.split("about ")
+    elif "in" in keyword_sentence:          # for sentences like "I'm interested in - "
+        keyword_sentences = keyword_sentence.split("in ")
     else:
         return [False, False]
     keyword_sentences = keyword_sentences[1].split("?")
@@ -115,6 +118,8 @@ def keywordExtraction():                                    # Extract the keywor
             keyword_sentences = keyword_sentence.split("are ")
         elif "about " in keyword_sentence:                  # for questions like "What do you know about - ?"
             keyword_sentences = keyword_sentence.split("about ")
+        elif "in" in keyword_sentence:                      # for sentences like "I'm interested in - "
+            keyword_sentences = keyword_sentence.split("in ")
         else:                                               # if it is not one of the patterned questions
             try:                                            # check if the question has a page on wikipedia (for example if the user inputs only the keyword)
                 wikipedia_mediawiki = MediaWiki()
@@ -183,8 +188,6 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
 
     if (type == "City" or type == "Country" or type == "Adm1" or type == "Continent" or type == "GeoPoliticalEntity" or type == "Park" or type =="Location" or type == "NaturalReserve"):
         print("Have you ever been to " + topic + "?")
-    elif (type == "FullName" or type == "FirstName"):
-        print("Have you ever heard about " + topic + "?")
     elif (type == "University"):
         print("Did you go to university?")
     elif (type == "Game"):
@@ -213,7 +216,7 @@ needKeyword = True
 
 while True:
 
-    if(needKeyword):
+    if needKeyword:
         # Manage the keyword
         [keyword, suggest] = keywordExtraction()
         needKeyword = True
@@ -230,7 +233,7 @@ while True:
     for x in range(len(sections)):          # detecting the empty sections
         if not is_not_blank(wikiPage.section(sections[x])):
             sections[x] = None
-        # if "\u0x8211" in sections[x]:         # trying to remove the sections with the - not recognised by system (e.g illinois state senator (1997–2004))
+        # if "\u0x8211" in sections[x]:     # trying to remove the sections with the - not recognised by system (e.g illinois state senator (1997–2004))
         #     sections[x] = None
     sections = filter(None, sections)       # removing the empty sections
 
@@ -269,24 +272,24 @@ while True:
         if user_input == "yes":
             if behaviour == 0:
                 presentSection(sections, actualSection)
-                behaviour = (behaviour + 1) % 3  # incrementing the behavoiur so that is not always the same
+                behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
                 break
 
             elif behaviour == 1:
                 presentSuggestion(suggestions)
-                behaviour = (behaviour + 1) % 3  # incrementing the behavoiur so that is not always the same
+                behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
                 break
 
             elif behaviour == 2:
                 if topics is not None:
                     for index in range(len(topics)):
                         if(topics[index][1] in knownTopics ):                   # check if in the extracted topic there is something known to ask
-                            topicProposer(topics[index][0], topics[index][1])    # [0] name of the topic, [1] type of the topic
+                            topicProposer(topics[index][0], topics[index][1])   # [0] name of the topic, [1] type of the topic
                             raw_input()                                         # answer of the user about the topic
                             print("Oh! That's very interesting!")
                             break
 
-                behaviour = (behaviour + 1) % 3         # incrementing the behavoiur so that is not always the same
+                behaviour = (behaviour + 1) % 3         # incrementing the behaviour so that is not always the same
         elif user_input == "no":
             break
 
