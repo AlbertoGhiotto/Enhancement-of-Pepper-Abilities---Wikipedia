@@ -3,9 +3,10 @@
 
 import unicodedata               # To convert unicode (read from wikipedia) to string
 from mediawiki import MediaWiki
-import topicExtractor
-import textSummarizationMC
+from topicExtractor import extractTopic
+from textSummarization import textSummarization
 import copy
+
 
 def is_not_blank(str):
     # Check if str is an empty string
@@ -153,7 +154,7 @@ def presentSection(sections, actualSection):                           # Present
             if isinstance(section_text, str):                               # if the text is a string
                 section_text = section_text.decode('unicode-escape')        # convert it to unicode
 
-            section_summary = textSummarizationMC.textSummarization((unicodedata.normalize('NFKD', section_text).encode('ascii', 'ignore')))
+            section_summary = textSummarization((unicodedata.normalize('NFKD', section_text).encode('ascii', 'ignore')))
             print(section_summary)                                          # print the summary obtained form textSummarization API
 
             user_input_section_another = answerQuestion("Do you want to know about another section?", ["yes", "no"], 2)
@@ -202,7 +203,6 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
         print("Have you ever saw " + topic + "?")
     elif (type == "Book"):
         print("Do you like reading books?")
-
 
 behaviour = 0
 presenter = 0
@@ -261,7 +261,7 @@ while True:
     presenter = (presenter + 1) % 3                             # incrementing the presenter so that is not always the same
 
     # Topic of conversation
-    topics = topicExtractor.extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))      # extracting the topics from the page's content
+    topics = extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))      # extracting the topics from the page's content
     
     while True:
         if behaviour != 2:
