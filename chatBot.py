@@ -3,7 +3,7 @@
 
 import unicodedata               # To convert unicode (read from wikipedia) to string
 from mediawiki import MediaWiki
-from topicExtractor import extractTopic
+from extractTopic import extractTopic
 from textSummarization import textSummarization
 import copy
 
