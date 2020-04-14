@@ -273,9 +273,9 @@ while True:
     while True:
         if behaviour != 2:
             if question == 0:
-                user_input = answerQuestion("Do you want more information about this topic?", ["yes", "no"], 2)
+                user_input = answerQuestion("Do you want more information about this topic?", ["yes", "no"], 4)
             else:
-                user_input = answerQuestion("Is there something else you would like to know about this topic?", ["yes", "no"], 2)
+                user_input = answerQuestion("Is there something else you would like to know about this topic?", ["yes", "no"], 4)
             question = (question + 1) % 2
         else:
             user_input = "yes"          # to make the third behaviour work without user input
@@ -284,11 +284,13 @@ while True:
             if behaviour == 0 and len(sections) > 0:
                 presentSection(sections, actualSection)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
+                restart = False
                 break
 
             elif behaviour == 1:
                 presentSuggestion(suggestions)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
+                restart = False
                 break
 
             elif behaviour == 2:
@@ -298,34 +300,49 @@ while True:
                             topicProposer(topics[index][0], topics[index][1])   # [0] name of the topic, [1] type of the topic
                             raw_input()                                         # answer of the user about the topic
                             print("Oh! That's very interesting!")
+                            restart = False
                             break
 
                 behaviour = (behaviour + 1) % 3         # incrementing the behaviour so that is not always the same
+                restart = False
                 break
             else:
                 print("That's all I know about this topic!")
         elif user_input == "no":
+            restart = False
             break
-
-    # We'll be here only if the user does not want to know more about the topic -> ask if the user wants some other topic
-    if questionTopic == 0:
-        user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
-    elif questionTopic == 1:
-        user_another_topic = answerQuestion("Are you interested in something else?", ["yes", "no"], 4)
-    else:
-        user_another_topic = answerQuestion("Is there something else you would like to know?", ["yes", "no"], 4)
-    questionTopic = (questionTopic + 1 ) % 3
-
-    if user_another_topic == "yes":
-        print("What do you want to know?")
-        needKeyword = True
-    elif user_another_topic == "no":
-        print("Ok! That's it for today, see you next time! Bye!")
-        break               # get out of the while -> end of the program
-    else:
-        [pageExist, suggest] = checkWiki(user_another_topic)
-        if pageExist:
-            keyword = user_another_topic
-            needKeyword = False
         else:
+            [pageExist, suggest] = checkWiki(user_input)
+            if pageExist:
+                keyword = user_input
+                needKeyword = False
+                restart = True
+                break
+            #else:
+            #    needKeyword = True
+
+    if restart == False:
+        # We'll be here only if the user does not want to know more about the topic -> ask if the user wants some other topic
+        if questionTopic == 0:
+            user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
+        elif questionTopic == 1:
+            user_another_topic = answerQuestion("Are you interested in something else?", ["yes", "no"], 4)
+        else:
+            user_another_topic = answerQuestion("Is there something else you would like to know?", ["yes", "no"], 4)
+        questionTopic = (questionTopic + 1 ) % 3
+
+        if user_another_topic == "yes":
+            print("What do you want to know?")
             needKeyword = True
+        elif user_another_topic == "no":
+            print("Ok! That's it for today, see you next time! Bye!")
+            break               # get out of the while -> end of the program
+        else:
+            [pageExist, suggest] = checkWiki(user_another_topic)
+            if pageExist:
+                keyword = user_another_topic
+                needKeyword = False
+            else:
+                needKeyword = True
+    else:
+        continue
