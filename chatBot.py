@@ -273,7 +273,7 @@ while True:
     while True:
         if behaviour != 2:
             if question == 0:
-                user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+                user_input = answerQuestion("Do you want more information about this topic?", ["yes", "no"], 2)
             else:
                 user_input = answerQuestion("Is there something else you would like to know about this topic?", ["yes", "no"], 2)
             question = (question + 1) % 2
