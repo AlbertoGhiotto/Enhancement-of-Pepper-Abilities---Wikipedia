@@ -40,10 +40,14 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
     print(question)
 
     if model == 1:                                              # limited number of sections case
-        for x in range(len(acceptedAnswer)/7):                  # prints the accepted answer when asking which section the user wants to talk about
-            print(acceptedAnswer[x])
-        print("another section")
-        acceptedAnswer.append("another section")                # add this element to the accepted answer list in order to being able to detect it with the "checkAnswer" function
+        if len(acceptedAnswer) < 6:
+            for x in range(len(acceptedAnswer)):
+                print(acceptedAnswer[x])
+        else:
+            for x in range(len(acceptedAnswer)/6):                  # prints the accepted answer when asking which section the user wants to talk about
+                print(acceptedAnswer[x])
+            print("another section")
+            acceptedAnswer.append("another section")                # add this element to the accepted answer list in order to being able to detect it with the "checkAnswer" function
     elif model == 1.5:                                          # all sections case
         for x in range(len(acceptedAnswer)):                    # prints the accepted answer when asking which section the user wants to talk about
             print(acceptedAnswer[x])
