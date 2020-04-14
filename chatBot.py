@@ -144,7 +144,8 @@ def keywordExtraction():                                    # Extract the keywor
             return [keyword_sentences[0], auto_suggest]
 
 
-def presentSection(sections, actualSection):                           # Present the section chosen by the user
+def presentSection(sections, actualSection):                           # Present the section chosen by the user.
+    # The second parameter is used to address the sections without having issues with upper and lower case letters
     user_input_section = answerQuestion("Great! Which one of the following sections would you like to know more about?", sections, 1)
     while True:
         if user_input_section in sections and user_input_section != "another section":
