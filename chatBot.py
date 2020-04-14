@@ -177,8 +177,9 @@ def presentSuggestion(suggestions):                     # Present the related to
     while True:
         if user_input_suggestion in suggestions:
             suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # serach on wikipedia the suggestion's page
-            content = suggestedPage.summarize(sentences=3)                      # summarize its content
+            content = suggestedPage.summarize(sentences=2)                      # summarize its content
             content = parenthesesRemover(content)
+            content = content.split("\n")[0]
             print(content)                                                      # print the summary
             break
         else:
@@ -206,6 +207,8 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
 
 behaviour = 0
 presenter = 0
+question  = 0
+questionTopic = 0
 
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
                "University", "Game", "SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
@@ -265,12 +268,16 @@ while True:
     
     while True:
         if behaviour != 2:
-            user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+            if question == 0:
+                user_input = answerQuestion("Do you want more information?", ["yes", "no"], 2)
+            else:
+                user_input = answerQuestion("Is there something else you would like to know about this topic?", ["yes", "no"], 2)
+            question = (question + 1) % 2
         else:
             user_input = "yes"          # to make the third behaviour work without user input
 
         if user_input == "yes":
-            if behaviour == 0:
+            if behaviour == 0 and len(sections) > 0:
                 presentSection(sections, actualSection)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
                 break
@@ -290,11 +297,21 @@ while True:
                             break
 
                 behaviour = (behaviour + 1) % 3         # incrementing the behaviour so that is not always the same
+                break
+            else:
+                print("That's all I know about this topic!")
         elif user_input == "no":
             break
 
     # We'll be here only if the user does not want to know more about the topic -> ask if the user wants some other topic
-    user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
+    if questionTopic == 0:
+        user_another_topic = answerQuestion("Do you want to know about something else?", ["yes", "no"], 4)
+    elif questionTopic == 1:
+        user_another_topic = answerQuestion("Are you interested in something else?", ["yes", "no"], 4)
+    else:
+        user_another_topic = answerQuestion("Is there something else you would like to know?", ["yes", "no"], 4)
+    questionTopic = (questionTopic + 1 ) % 3
+
     if user_another_topic == "yes":
         print("What do you want to know?")
         needKeyword = True
@@ -306,3 +323,5 @@ while True:
         if pageExist:
             keyword = user_another_topic
             needKeyword = False
+        else:
+            needKeyword = True
