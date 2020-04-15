@@ -196,7 +196,7 @@ def presentSuggestion(suggestions):                     # Present the related to
     while True:
         if user_input_suggestion in suggestions:
             suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # serach on wikipedia the suggestion's page
-            content = suggestedPage.summarize(sentences=2)                      # summarize its content
+            content = suggestedPage.summarize(sentences=3)                      # summarize its content
             content = parenthesesRemover(content)
             content = content.split("\n")[0]
             print(content)                                                      # print the summary
@@ -271,7 +271,7 @@ while True:
         suggestions[x] = suggestions[x].lower()                     # set the first letter lower case to being user-friendlier :) (actually for speech to text)
 
     # Content
-    content = wikiPage.summarize(sentences=4)                   # get the summary of the wikipedia page
+    content = wikiPage.summarize(sentences=3)                   # get the summary of the wikipedia page
     content = parenthesesRemover(content)                       # remove the parenteses
     content = content.split("\n")[0]                            # take everything until a \n. Done to avoid going up to sections for short pages
     if presenter == 0:
