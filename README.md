@@ -14,7 +14,7 @@ Install the python [meaningCloud API](https://github.com/MeaningCloud/meaningclo
 
 ## Running the chat bot
 
-To launch the chat bot, run the ``` chatBotV2.py``` python script.
+To launch the chat bot, run the ``` chatBot.py``` python script.
 
 
 
