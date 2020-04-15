@@ -2,13 +2,9 @@
 
 import time
 
-name = ""
-f = open(name, "a+")  # a+:append
-
-def initLog():
-    timeStamp = time.asctime()
-    name = "log" + timeStamp + ".txt"
-    f = open(name, "a+")  # a+:append
+timeStamp = time.time()
+name = "log/log" + str(timeStamp) + ".txt"
+f = open(name, "a+")
 
 def log(text):
     f.write(text + "\n")

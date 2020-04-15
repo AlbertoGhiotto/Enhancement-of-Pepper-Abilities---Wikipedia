@@ -6,7 +6,6 @@ from mediawiki import MediaWiki
 from extractTopic import extractTopic
 from textSummarization import textSummarization
 from log import log
-from log import initLog
 from log import closeLog
 import copy
 
@@ -100,14 +99,18 @@ def checkWiki(keyword):                     # Check if it exists a wikipedia pag
 
 def isThereAKeyword(keyword_sentence):
     # Check if in the answer to the question "Do you want to know about something else?" there is a possible keyword
-    if "is " in keyword_sentence:           # for questions like "Who is - ?"
+    if " is " in keyword_sentence:           # for questions like "Who is - ?"
         keyword_sentences = keyword_sentence.split("is ")
-    elif "are " in keyword_sentence:        # for questions like "Who are the - ?"
+    elif " are " in keyword_sentence:        # for questions like "Who are the - ?"
         keyword_sentences = keyword_sentence.split("are ")
-    elif "about " in keyword_sentence:      # for questions like "What do you know about - ?"
+    elif " about " in keyword_sentence:      # for questions like "What do you know about - ?"
         keyword_sentences = keyword_sentence.split("about ")
-    elif "in" in keyword_sentence:          # for sentences like "I'm interested in - "
+    elif " in " in keyword_sentence:          # for sentences like "I'm interested in - "
         keyword_sentences = keyword_sentence.split("in ")
+    elif " when " in keyword_sentence:          # for sentences like "I want to know when - "
+        keyword_sentences = keyword_sentence.split("when ")
+    elif " where " in keyword_sentence:         # for sentences like "I want to know where - "
+        keyword_sentences = keyword_sentence.split("where ")
     else:
         return [False, False]
     keyword_sentences = keyword_sentences[1].split("?")
@@ -120,14 +123,18 @@ def keywordExtraction():                                    # Extract the keywor
     while True:
         keyword_sentence = raw_input()
 
-        if "is " in keyword_sentence:                       # for questions like "Who is - ?"
+        if " is " in keyword_sentence:                       # for questions like "Who is - ?"
             keyword_sentences = keyword_sentence.split("is ")
-        elif "are " in keyword_sentence:                    # for questions like "Who are the - ?"
+        elif " are " in keyword_sentence:                    # for questions like "Who are the - ?"
             keyword_sentences = keyword_sentence.split("are ")
-        elif "about " in keyword_sentence:                  # for questions like "What do you know about - ?"
+        elif " about " in keyword_sentence:                  # for questions like "What do you know about - ?"
             keyword_sentences = keyword_sentence.split("about ")
-        elif "in" in keyword_sentence:                      # for sentences like "I'm interested in - "
+        elif " in " in keyword_sentence:                     # for sentences like "I'm interested in - "
             keyword_sentences = keyword_sentence.split("in ")
+        elif " when " in keyword_sentence:                   # for sentences like "I want to know when - "
+            keyword_sentences = keyword_sentence.split("when ")
+        elif " where " in keyword_sentence:                  # for sentences like "I want to know where - "
+            keyword_sentences = keyword_sentence.split("where ")
         else:                                               # if it is not one of the patterned questions
             try:                                            # check if the question has a page on wikipedia (for example if the user inputs only the keyword)
                 wikipedia_mediawiki = MediaWiki()
@@ -222,8 +229,6 @@ presenter = 0
 question  = 0
 questionTopic = 0
 
-initLog()          # call to init function for txt log file
-
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
                "University", "Game", "SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
                "ConsumerDurablesCompany",
@@ -290,10 +295,10 @@ while True:
             question = (question + 1) % 2
         else:
             user_input = "yes"          # to make the third behaviour work without user input
-            log("moreInfo," + behaviour + ",null")
+            log("moreInfo," + str(behaviour) + ",null")
 
         if user_input == "yes":
-            log("moreInfo," + behaviour + ",yes")
+            log("moreInfo," + str(behaviour) + ",yes")
             if behaviour == 0 and len(sections) > 0:
                 presentSection(sections, actualSection)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
@@ -315,16 +320,18 @@ while True:
                             print("Oh! That's very interesting!")
                             restart = False
                             break
+                    print("That's all I know about this topic! I'll look something up and I'll tell you, try again later!")
                 else:
                     log("topicProposer,empty list")
+
 
                 behaviour = (behaviour + 1) % 3         # incrementing the behaviour so that is not always the same
                 restart = False
                 break
-            else:
+            else:              # when there are no sections in the list and the behaviour is 0
                 print("That's all I know about this topic!")
         elif user_input == "no":
-            log("moreInfo," + behaviour + ",no")
+            log("moreInfo," + str(behaviour) + ",no")
             restart = False
             break
         else:
@@ -333,7 +340,7 @@ while True:
                 keyword = user_input
                 needKeyword = False
                 restart = True
-                log("moreInfo," + behaviour + ",keyword")
+                log("moreInfo," + str(behaviour) + ",keyword")
                 break
             #else:
             #    needKeyword = True
@@ -355,7 +362,6 @@ while True:
         elif user_another_topic == "no":
             print("Ok! That's it for today, see you next time! Bye!")
             log("anotherTopic,no")
-            closeLog()
             break               # get out of the while -> end of the program
         else:
             [pageExist, suggest] = checkWiki(user_another_topic)
@@ -368,3 +374,5 @@ while True:
                 log("anotherTopic,keyword,false")
     else:
         continue
+
+closeLog()
