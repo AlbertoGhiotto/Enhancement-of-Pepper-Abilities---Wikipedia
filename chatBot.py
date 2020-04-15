@@ -5,6 +5,9 @@ import unicodedata               # To convert unicode (read from wikipedia) to s
 from mediawiki import MediaWiki
 from extractTopic import extractTopic
 from textSummarization import textSummarization
+from log import log
+from log import initLog
+from log import closeLog
 import copy
 
 
@@ -136,6 +139,7 @@ def keywordExtraction():                                    # Extract the keywor
                     return [keyword_sentence, True]         # True = auto-suggest ON
                 except:
                     print("I'm sorry the information you want are not available on wikipedia! Try with something else!")
+                    log("keywordEX,null")
                     continue
 
         keyword_sentences = keyword_sentences[1].split("?")
@@ -166,12 +170,15 @@ def presentSection(sections, actualSection):                           # Present
 
             if user_input_section_another == "yes":
                 user_input_section = answerQuestion("Which section do you want to know more about?", sections, 1)
+                log("presentSection,another section,yes")
                 pass    # restart the while
             elif user_input_section_another == "no":
+                log("presentSection,another section,no")
                 break   # get out of the while
 
         elif user_input_section == "another section":           # this prints all the section but by restarting the while it asks again the question
             sections.remove("another section")                  # remove the element which was added for the use in "checkAnswer" function
+            log("presentSection,section chosen,another section")
             user_input_section = answerQuestion("Here are all the sections. Which one are you interested in?", sections, 1.5)
             pass     # restart the while
 
@@ -215,6 +222,8 @@ presenter = 0
 question  = 0
 questionTopic = 0
 
+initLog()          # call to init function for txt log file
+
 knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Park", "Location", "NaturalReserve",
                "University", "Game", "SoftwareCompany", "MediaCompany", "RetailingCompany", "TechnologyEquipmentCompany",
                "ConsumerDurablesCompany",
@@ -227,6 +236,7 @@ while True:
     if needKeyword:
         # Manage the keyword
         [keyword, suggest] = keywordExtraction()
+        log("keywordEX," + keyword)
         needKeyword = True
 
     # Use MediaWiki API
@@ -280,8 +290,10 @@ while True:
             question = (question + 1) % 2
         else:
             user_input = "yes"          # to make the third behaviour work without user input
+            log("moreInfo," + behaviour + ",null")
 
         if user_input == "yes":
+            log("moreInfo," + behaviour + ",yes")
             if behaviour == 0 and len(sections) > 0:
                 presentSection(sections, actualSection)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
@@ -303,6 +315,8 @@ while True:
                             print("Oh! That's very interesting!")
                             restart = False
                             break
+                else:
+                    log("topicProposer,empty list")
 
                 behaviour = (behaviour + 1) % 3         # incrementing the behaviour so that is not always the same
                 restart = False
@@ -310,6 +324,7 @@ while True:
             else:
                 print("That's all I know about this topic!")
         elif user_input == "no":
+            log("moreInfo," + behaviour + ",no")
             restart = False
             break
         else:
@@ -318,6 +333,7 @@ while True:
                 keyword = user_input
                 needKeyword = False
                 restart = True
+                log("moreInfo," + behaviour + ",keyword")
                 break
             #else:
             #    needKeyword = True
@@ -334,16 +350,21 @@ while True:
 
         if user_another_topic == "yes":
             print("What do you want to know?")
+            log("anotherTopic,yes")
             needKeyword = True
         elif user_another_topic == "no":
             print("Ok! That's it for today, see you next time! Bye!")
+            log("anotherTopic,no")
+            closeLog()
             break               # get out of the while -> end of the program
         else:
             [pageExist, suggest] = checkWiki(user_another_topic)
             if pageExist:
                 keyword = user_another_topic
                 needKeyword = False
+                log("anotherTopic,keyword,true")
             else:
                 needKeyword = True
+                log("anotherTopic,keyword,false")
     else:
         continue
