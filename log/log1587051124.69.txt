@@ -1,0 +1,9 @@
+keywordEX,coca cola
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,section chosen,another section
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,no
+anotherTopic,no
