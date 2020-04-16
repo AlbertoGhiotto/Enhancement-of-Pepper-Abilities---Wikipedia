@@ -17,8 +17,9 @@ Install the python [meaningCloud API](https://github.com/MeaningCloud/meaningclo
 To launch the chat bot, run the ``` chatBot.py``` python script.
 
 ## Workflow
-
-<img src="documentation/wf.png" alt="drawing" height="150"/>
+<p align="center">
+ <img src="documentation/wf.png" width="300"/>
+</p>
 
 
 ## Authors
