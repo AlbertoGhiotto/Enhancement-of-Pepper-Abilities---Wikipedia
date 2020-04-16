@@ -18,7 +18,7 @@ To launch the chat bot, run the ``` chatBot.py``` python script.
 
 ## Workflow
 <p align="center">
- <img src="documentation/structure.eps" width="650"/>
+ <img src="documentation/wf.png" width="650"/>
 </p>
 
 
