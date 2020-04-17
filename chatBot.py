@@ -74,7 +74,7 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
         else:
-            print("Sorry! I didn't get that!")
+            print("Sorry! I didn't get that! I know it's sometimes difficult with me but don't feel discouraged!")
             if model == 1 or model == 1.5:      # corresponds to sections
                 print("Please answer with just the name of the section")
             elif model == 2:                    # corresponds to yes/no
