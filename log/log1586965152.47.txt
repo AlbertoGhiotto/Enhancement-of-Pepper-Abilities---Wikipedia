@@ -1,8 +1,0 @@
-keywordEX,bin laden died
-moreInfo,0,no
-anotherTopic,keyword,true
-moreInfo,0,yes
-presentSection,another section,no
-anotherTopic,keyword,true
-moreInfo,1,no
-anotherTopic,no
