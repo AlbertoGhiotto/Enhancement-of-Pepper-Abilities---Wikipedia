@@ -68,6 +68,8 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
                 return possibleKeyword
             elif checkAnswer(user_answer, acceptedAnswer)[0]:           # if keyword not found, check if there is "yes/no" in the user's answer
                 return checkAnswer(user_answer, acceptedAnswer)[1]
+            elif user_answer == "terminate":        # to terminate the test
+                return user_answer
             else:                                                       # if keyword not found + there is no "yes/no"
                 print("Sorry I didn't get that! Are you interested in something else?")
                 continue
@@ -80,7 +82,7 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
             elif model == 2:                    # corresponds to yes/no
                 print("Please answer with just yes or no")
             elif model == 3:                     # corresponds to suggestions
-                print("Please answer with just the name of the suggestion")
+                print("Please answer with just the name of the related topic")
 
 
 def checkWiki(keyword):                     # Check if it exists a wikipedia page corresponding to the keyword
@@ -360,9 +362,14 @@ while True:
             log("anotherTopic,yes")
             needKeyword = True
         elif user_another_topic == "no":
-            print("Ok! That's it for today, see you next time! Bye!")
+            # print("Ok! That's it for today, see you next time! Bye!")
+            print("Come on, I too am quarantined and I'm bored! Ask me something else!")
             log("anotherTopic,no")
-            break               # get out of the while -> end of the program
+            needKeyword = True
+            continue                                    # patch for continuous testing. We remove the ability
+            # break               # get out of the while -> end of the program
+        elif user_another_topic == "terminate":
+            break
         else:
             [pageExist, suggest] = checkWiki(user_another_topic)
             if pageExist:
