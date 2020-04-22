@@ -5,8 +5,8 @@ import time
 from logAnalyzer import logAnalyzer
 
 timeStamp = time.time()
-name = "log/log" + str(timeStamp) + ".txt"
-name2 = "log/res" + str(timeStamp) + ".txt"
+name =  "log/GroupB-NT/log" + str(timeStamp) + ".txt"
+name2 = "log/GroupB-NT/res" + str(timeStamp) + ".txt"
 f = open(name, "a+")
 
 def log(text):
