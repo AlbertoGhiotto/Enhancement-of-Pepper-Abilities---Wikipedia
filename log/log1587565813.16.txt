@@ -1,0 +1,22 @@
+keywordEX,prada
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,donatella versace
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,hollywood
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,leonardo di caprio
+moreInfo,0,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,anjelina jolie
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,paris hilton
+moreInfo,2,null
+moreInfo,2,yes
