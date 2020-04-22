@@ -8,11 +8,7 @@ from textSummarization import textSummarization
 from logA import log
 from logA import closeLog
 import copy
-import sys
-import warnings
 
-if not sys.warnoptions:
-    warnings.simplefilter("ignore")
 
 def is_not_blank(str):
     # Check if str is an empty string
