@@ -226,7 +226,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
     elif (type == "Book"):
         print("Do you like reading books?")
 
-behaviour = 0
+behaviour = 1
 presenter = 0
 question  = 0
 questionTopic = 0
@@ -268,7 +268,17 @@ while True:
         sections[x] = sections[x].lower()
 
     # Suggestions
-    suggestions = wikipedia_mediawiki.search(keyword, 5, False)     # get the related topics
+    suggestions = wikipedia_mediawiki.search(keyword, 5, False)     # get the related topic
+    # Check that the suggested pages exist, if not, remove the suggestion from the list
+    for x in range(len(suggestions)):
+        try:
+            suggestedPage = wikipedia_mediawiki.page(suggestions[x])  # search on wikipedia the suggestion's page
+        except:
+            suggestions[x] = None
+
+    suggestions = filter(None, suggestions)  # removing the empty suggestions
+
+
     for x in range(len(suggestions)):
         suggestions[x] = suggestions[x].lower()                     # set the first letter lower case to being user-friendlier :) (actually for speech to text)
 
