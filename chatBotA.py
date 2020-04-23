@@ -297,7 +297,8 @@ while True:
 
     # Topic of conversation
     topics = extractTopic(unicodedata.normalize('NFKD', content).encode('ascii', 'ignore'))      # extracting the topics from the page's content
-    
+    foundTopic = False          # flag for when no extracted topic is found
+
     while True:
         if behaviour != 2:
             if question == 0:
@@ -331,8 +332,11 @@ while True:
                             raw_input()                                         # answer of the user about the topic
                             print("Oh! That's very interesting!")
                             restart = False
+                            foundTopic = True       # found a topic to propose to the user -> display the next print
                             break
-                    print("That's all I know about this topic! I'll look something up and I'll tell you, try again later!")
+                    if not foundTopic:
+                        print("That's all I know about this topic! I'll look something up and I'll tell you, try again later!")
+                        foundTopic = False
                 else:
                     log("topicProposer,empty list")
 
