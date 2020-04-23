@@ -346,6 +346,7 @@ while True:
                 break
             else:              # when there are no sections in the list and the behaviour is 0
                 print("That's all I know about this topic!")
+                break
         elif user_input == "no":
             log("moreInfo," + str(behaviour) + ",no")
             restart = False
