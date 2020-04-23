@@ -5,8 +5,8 @@ import unicodedata               # To convert unicode (read from wikipedia) to s
 from mediawiki import MediaWiki
 from extractTopic import extractTopic
 from textSummarization import textSummarization
-from logB import log
-from logB import closeLog
+from logA import log
+from logA import closeLog
 import copy
 
 
@@ -197,7 +197,7 @@ def presentSuggestion(suggestions):                     # Present the related to
     user_input_suggestion = answerQuestion("Great! Which one of the following related topic would you like to know more about?", suggestions, 3)
     while True:
         if user_input_suggestion in suggestions:
-            suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # serach on wikipedia the suggestion's page
+            suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # search on wikipedia the suggestion's page
             content = suggestedPage.summarize(sentences=3)                      # summarize its content
             content = parenthesesRemover(content)
             content = content.split("\n")[0]
@@ -226,7 +226,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
     elif (type == "Book"):
         print("Do you like reading books?")
 
-behaviour = 0
+behaviour = 1
 presenter = 0
 question  = 0
 questionTopic = 0
@@ -268,7 +268,17 @@ while True:
         sections[x] = sections[x].lower()
 
     # Suggestions
-    suggestions = wikipedia_mediawiki.search(keyword, 5, False)     # get the related topics
+    suggestions = wikipedia_mediawiki.search(keyword, 5, False)     # get the related topic
+    # Check that the suggested pages exist, if not, remove the suggestion from the list
+    for x in range(len(suggestions)):
+        try:
+            suggestedPage = wikipedia_mediawiki.page(suggestions[x])  # search on wikipedia the suggestion's page
+        except:
+            suggestions[x] = None
+
+    suggestions = filter(None, suggestions)  # removing the empty suggestions
+
+
     for x in range(len(suggestions)):
         suggestions[x] = suggestions[x].lower()                     # set the first letter lower case to being user-friendlier :) (actually for speech to text)
 
