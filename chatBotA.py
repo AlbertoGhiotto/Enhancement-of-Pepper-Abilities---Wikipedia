@@ -197,7 +197,7 @@ def presentSuggestion(suggestions):                     # Present the related to
     user_input_suggestion = answerQuestion("Great! Which one of the following related topic would you like to know more about?", suggestions, 3)
     while True:
         if user_input_suggestion in suggestions:
-            suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # serach on wikipedia the suggestion's page
+            suggestedPage = wikipedia_mediawiki.page(user_input_suggestion)     # search on wikipedia the suggestion's page
             content = suggestedPage.summarize(sentences=3)                      # summarize its content
             content = parenthesesRemover(content)
             content = content.split("\n")[0]
