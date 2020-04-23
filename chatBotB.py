@@ -5,8 +5,8 @@ import unicodedata               # To convert unicode (read from wikipedia) to s
 from mediawiki import MediaWiki
 from extractTopic import extractTopic
 from textSummarization import textSummarization
-from logA import log
-from logA import closeLog
+from logB import log
+from logB import closeLog
 import copy
 
 
