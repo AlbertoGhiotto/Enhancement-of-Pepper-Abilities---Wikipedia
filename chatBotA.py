@@ -318,7 +318,7 @@ while True:
                 restart = False
                 break
 
-            elif behaviour == 1:
+            elif behaviour == 1 and len(suggestions) > 0:
                 presentSuggestion(suggestions)
                 behaviour = (behaviour + 1) % 3  # incrementing the behaviour so that is not always the same
                 restart = False
