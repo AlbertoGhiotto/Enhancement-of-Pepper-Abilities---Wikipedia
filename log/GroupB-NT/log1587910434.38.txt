@@ -1,0 +1,22 @@
+keywordEX,queen eliabeth II
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,null
+keywordEX,quinoa
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,spoken in south america
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,europe
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,null
+keywordEX,how can i cook pasta?
+moreInfo,2,null
+moreInfo,2,yes
+topicProposer,empty list

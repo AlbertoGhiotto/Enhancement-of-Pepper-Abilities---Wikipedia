@@ -1,0 +1,30 @@
+keywordEX,George Micheal
+moreInfo,1,yes
+anotherTopic,keyword,true
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,keyword,true
+moreInfo,0,keyword
+moreInfo,0,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,cristiano ronaldo age
+moreInfo,1,yes
+anotherTopic,keyword,true
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,null
+keywordEX,joseph capriati
+moreInfo,0,no
+anotherTopic,keyword,true
+moreInfo,0,no
+anotherTopic,no
+keywordEX,null
+keywordEX,gianluca fiocchi
+moreInfo,0,no
+anotherTopic,no
+keywordEX,null
+keywordEX,Dell computers
+moreInfo,0,no
