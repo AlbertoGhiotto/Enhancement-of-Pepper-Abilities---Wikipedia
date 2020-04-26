@@ -226,7 +226,7 @@ def topicProposer(topic, type):                 # Propose a conversation topic b
     elif (type == "Book"):
         print("Do you like reading books?")
 
-behaviour = 1
+behaviour = 0
 presenter = 0
 question  = 0
 questionTopic = 0
