@@ -1,0 +1,8 @@
+keywordEX,the hammer
+moreInfo,1,no
+anotherTopic,keyword,false
+keywordEX,the Divine Comedy
+moreInfo,1,yes
+anotherTopic,keyword,true
+moreInfo,2,null
+moreInfo,2,yes
