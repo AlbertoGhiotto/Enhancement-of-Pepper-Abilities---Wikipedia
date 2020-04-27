@@ -1,0 +1,9 @@
+keywordEX,commissario Montalbano
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,paella_
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,keyword,true
+moreInfo,0,keyword
+moreInfo,0,no
