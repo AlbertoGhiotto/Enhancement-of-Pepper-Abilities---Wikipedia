@@ -236,6 +236,9 @@ knownTopics = ["City", "Country", "Adm1", "Continent", "GeoPoliticalEntity", "Pa
                "ConsumerDurablesCompany",
                "AutomobileCompany", "IndustrialCompany", "Company", "War", "SportsTeam", "Movie", "Broadcast", "Book"]
 
+bannedSections = ["Notes", "Links", "Notes and references", "Related links", "Other", "External links", "References", "See also", "Bibliography",
+                  "Further reading", "Gallery", "Sources", "Citations", "Work cited", ""]
+
 needKeyword = True
 
 while True:
@@ -257,6 +260,8 @@ while True:
 
     for x in range(len(sections)):          # detecting the empty sections
         if not is_not_blank(wikiPage.section(sections[x])):
+            sections[x] = None
+        if sections[x] in bannedSections:
             sections[x] = None
         # if "\u0x8211" in sections[x]:     # trying to remove the sections with the - not recognised by system (e.g illinois state senator (1997–2004))
         #     sections[x] = None
