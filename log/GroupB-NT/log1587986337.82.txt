@@ -1,0 +1,12 @@
+keywordEX,thw richest men in the world
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,can you tell me list of chatbots?
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,the meatballs
+moreInfo,0,yes
+presentSection,another section,no
