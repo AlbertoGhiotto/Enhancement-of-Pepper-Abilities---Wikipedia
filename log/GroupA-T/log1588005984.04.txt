@@ -1,0 +1,21 @@
+keywordEX,the shawnshank redemption
+moreInfo,0,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,no
+keywordEX,null
+keywordEX,generative adversarial networks
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,the papers published by ian goodfellow
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,keyword,true
+moreInfo,0,keyword
+moreInfo,0,no
+anotherTopic,yes
+keywordEX,his life
+moreInfo,0,no
+anotherTopic,no
+keywordEX,the life of jackson
+moreInfo,0,no
