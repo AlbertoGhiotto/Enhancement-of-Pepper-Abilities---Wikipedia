@@ -71,7 +71,7 @@ def answerQuestion(question, acceptedAnswer, model):            # print the ques
             elif user_answer == "terminate":        # to terminate the test
                 return user_answer
             else:                                                       # if keyword not found + there is no "yes/no"
-                print("Sorry I didn't get that! Are you interested in something else?")
+                print("Sorry I didn't get that! Try answering with just yes or no")
                 continue
         elif checkAnswer(user_answer, acceptedAnswer)[0]:       # if not, check if one of the accepted answers is contained in the user's answer
             return checkAnswer(user_answer, acceptedAnswer)[1]
