@@ -1,0 +1,20 @@
+keywordEX,Pete Sampras
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,the moon from the earth
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,the distance between Moon and Earth
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,How many legs does an octopus have?
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,section chosen,another section
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,Who was the last man to walk on the moon?
+moreInfo,1,yes
