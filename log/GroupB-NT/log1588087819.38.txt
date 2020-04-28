@@ -1,0 +1,15 @@
+keywordEX,calvino
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,lou reed
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,null
+keywordEX,matteo renzi
+moreInfo,0,no
