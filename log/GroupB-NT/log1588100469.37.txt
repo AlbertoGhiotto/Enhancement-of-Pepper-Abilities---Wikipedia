@@ -1,0 +1,29 @@
+keywordEX,Buenos Aires
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,Che guevara
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,penguins
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,Where do the penguins live?
+moreInfo,0,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,null
+keywordEX,kubrick
+moreInfo,1,no
+anotherTopic,no
+keywordEX,rome
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,can you show me the history of juventus?
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,do you like to swim?
+moreInfo,0,no
