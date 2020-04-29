@@ -8,6 +8,7 @@ from textSummarization import textSummarization
 from logA import log
 from logA import closeLog
 import copy
+from unidecode import unidecode
 
 
 def is_not_blank(str):
@@ -269,8 +270,9 @@ while True:
 
     actualSection = copy.copy(sections)     # make a shallow copy of the list to have the case sensitive sections list
 
-    for x in range(len(sections)):          # set the first letter lower case to being user-friendlier :) (actually for speech to text)
-        sections[x] = sections[x].lower()
+    for x in range(len(sections)):
+        sections[x] = sections[x].lower()     # set the first letter lower case to being user-friendlier :) (actually for speech to text)
+        sections[x] = unidecode(sections[x])  # remove accent if there is one
 
     # Suggestions
     suggestions = wikipedia_mediawiki.search(keyword, 5, False)     # get the related topic
@@ -286,6 +288,7 @@ while True:
 
     for x in range(len(suggestions)):
         suggestions[x] = suggestions[x].lower()                     # set the first letter lower case to being user-friendlier :) (actually for speech to text)
+        suggestions[x] = unidecode(suggestions[x])                        # remove accent if there is one
 
     # Content
     content = wikiPage.summarize(sentences=3)                   # get the summary of the wikipedia page
