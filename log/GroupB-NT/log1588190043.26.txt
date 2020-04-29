@@ -1,0 +1,22 @@
+keywordEX,quarantene
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,leviticus
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,talmud
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,calisthenics
+moreInfo,0,no
+anotherTopic,keyword,false
+keywordEX,null
+keywordEX,do you like cats?
+moreInfo,0,keyword
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,no
+keywordEX,what's a table
+moreInfo,1,no
