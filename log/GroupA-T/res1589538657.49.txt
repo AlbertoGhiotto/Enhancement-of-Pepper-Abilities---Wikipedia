@@ -1,0 +1,10 @@
+moreInfo_yes: 5
+moreInfo_no: 0
+moreInfo_keyword: 0
+sectionChosen_anothersection: 0
+anotherSections_yes: 0
+anotherSections_no: 2
+anotherTopic_no: 1
+anotherTopic_keyword_true: 1
+anotherTopic_keyword_false: 1
+topic_emptylist: 0
