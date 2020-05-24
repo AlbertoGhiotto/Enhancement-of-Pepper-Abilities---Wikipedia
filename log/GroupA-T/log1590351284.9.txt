@@ -1,0 +1,13 @@
+keywordEX,artificial intelligence
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,giraffe
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,extintion
+moreInfo,0,yes
+presentSection,another section,no
