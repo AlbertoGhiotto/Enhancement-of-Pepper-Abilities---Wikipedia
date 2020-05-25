@@ -1,0 +1,21 @@
+keywordEX,hello
+moreInfo,0,no
+anotherTopic,keyword,true
+moreInfo,0,no
+anotherTopic,no
+keywordEX,Calabria
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,no
+anotherTopic,no
+keywordEX,fuck you
+moreInfo,1,keyword
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,no
