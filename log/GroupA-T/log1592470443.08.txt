@@ -1,0 +1,32 @@
+keywordEX,flour
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX, a guitar
+moreInfo,2,null
+moreInfo,2,yes
+topicProposer,empty list
+anotherTopic,yes
+keywordEX,senegal
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,racism
+moreInfo,2,null
+moreInfo,2,yes
+topicProposer,empty list
+anotherTopic,yes
+keywordEX,When did racism start?
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,S&P
+moreInfo,2,null
+moreInfo,2,yes
