@@ -1,0 +1,40 @@
+keywordEX,calisthenics
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,Do you like tea?
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,a smartphone
+moreInfo,2,null
+moreInfo,2,yes
+topicProposer,empty list
+anotherTopic,yes
+keywordEX,When were smartphones invented?
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,no
+keywordEX,null
+keywordEX,Fedez
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,pizza
+moreInfo,2,null
+moreInfo,2,yes
+topicProposer,empty list
+anotherTopic,yes
+keywordEX,a computer
+moreInfo,0,yes
+presentSection,another section,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,a post-it
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,coke
+moreInfo,0,no
