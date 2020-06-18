@@ -1,0 +1,30 @@
+keywordEX,an inverter
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,the punkreas
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,modena city ramblers
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,blink 182
+moreInfo,0,yes
+presentSection,section chosen,another section
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,Do you know lg?
+moreInfo,1,yes
+anotherTopic,no
+keywordEX,python
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,are you made with python?
+moreInfo,0,no
+anotherTopic,no
+keywordEX,quarantine
+moreInfo,0,yes
+presentSection,another section,no
