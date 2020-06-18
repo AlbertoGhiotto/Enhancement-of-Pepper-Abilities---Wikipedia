@@ -1,0 +1,29 @@
+keywordEX,football
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,yes
+keywordEX,Do you like football?
+moreInfo,1,no
+anotherTopic,keyword,true
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,pavel nedved
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,no
+keywordEX,do you know juventus?
+moreInfo,0,yes
+presentSection,another section,yes
+presentSection,another section,no
+anotherTopic,no
+keywordEX,do you know asus?
+moreInfo,1,yes
+anotherTopic,yes
+keywordEX,asus
+moreInfo,2,null
+moreInfo,2,yes
+anotherTopic,yes
+keywordEX,dell
+moreInfo,0,no
