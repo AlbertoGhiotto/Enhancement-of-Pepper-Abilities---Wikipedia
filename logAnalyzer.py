@@ -65,6 +65,7 @@ def logAnalyzer(name, name2):
     f.write("sectionChosen_anothersection: " + str(sectionChosen_anothersection) + "\n")
     f.write("anotherSections_yes: " + str(anotherSections_yes) + "\n")
     f.write("anotherSections_no: " + str(anotherSections_no) + "\n")
+    f.write("anotherTopic_yes: " + str(anotherTopic_yes) + "\n")
     f.write("anotherTopic_no: " + str(anotherTopic_no) + "\n")
     f.write("anotherTopic_keyword_true: " + str(anotherTopic_keyword_true) + "\n")
     f.write("anotherTopic_keyword_false: " + str(anotherTopic_keyword_false) + "\n")

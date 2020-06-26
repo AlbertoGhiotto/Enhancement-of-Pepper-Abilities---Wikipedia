@@ -8,3 +8,14 @@ anotherTopic_no: 2
 anotherTopic_keyword_true: 2
 anotherTopic_keyword_false: 0
 topic_emptylist: 0
+moreInfo_yes: 3
+moreInfo_no: 2
+moreInfo_keyword: 0
+sectionChosen_anothersection: 0
+anotherSections_yes: 0
+anotherSections_no: 1
+anotherTopic_yes: 0
+anotherTopic_no: 2
+anotherTopic_keyword_true: 2
+anotherTopic_keyword_false: 0
+topic_emptylist: 0
